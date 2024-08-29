@@ -118,89 +118,12 @@ public :
    TSBSGeant4::CalData_t Earm_BBHodoScint;
    TSBSGeant4::DigTimingData_t Earm_BBHodo_Dig;
 
-   // GRINCH variables
-   TSBSGeant4::RICHData_t Earm_GRINCH;
-   TSBSGeant4::DigTimingData_t Earm_GRINCH_Dig;
 
-   //BB ECal variables
-   //TSBSGeant4::ECalData_t Earm_BBPS;
-   TSBSGeant4::CalData_t Earm_BBPSTF1;
-   //TSBSGeant4::DigCalData_t Earm_BBPS_Dig;
-   TSBSGeant4::DigSampCalData_t Earm_BBPS_Dig;
-   //TSBSGeant4::DigCalFADC7Data_t Earm_BBPS_Dig;
-   //TSBSGeant4::ECalData_t Earm_BBSH;
-   TSBSGeant4::CalData_t Earm_BBSHTF1;
-   //TSBSGeant4::DigCalData_t Earm_BBSH_Dig;
-   TSBSGeant4::DigSampCalData_t Earm_BBSH_Dig;
-   //TSBSGeant4::DigCalFADC7Data_t Earm_BBSH_Dig;
-   
-   // Coordinate detector hits
-   //TSBSGeant4::ECalData_t Earm_CDET;
-   //TSBSGeant4::CalData_t  Earm_CDET_Scint;
-   //TSBSGeant4::ECalData_t Harm_CDET;
-   //TSBSGeant4::CalData_t  Harm_CDET_Scint;
-   //exception: the only det that can be used on either side
-   TSBSGeant4::CalData_t CDET_Scint;
-   TSBSGeant4::DigTimingData_t CDET_Dig;
-   
-   // GEp Electromagnetic calorimeter hits
-   // TSBSGeant4::CalData_t  Earm_ECAL_box;
-   //TSBSGeant4::ECalData_t Earm_ECAL;
-   TSBSGeant4::CalData_t Earm_ECalTF1;
-   TSBSGeant4::DigSampCalData_t Earm_ECal_Dig;
-
-   // Focal Plane Polarimeter 1 hits
-   TSBSGeant4::GEMData_t Harm_FPP1;
-   TSBSGeant4::DigGEMData_t Harm_FPP1_Dig;
-   //TSBSGeant4::TrackerData_t Harm_FPP1_Track;
-   TSBSGeant4::GEMData_t Harm_FPP2;
-   TSBSGeant4::DigGEMData_t Harm_FPP2_Dig;
-   //TSBSGeant4::TrackerData_t Harm_FPP2_Track;
-   TSBSGeant4::GEMData_t Harm_FT;
-   TSBSGeant4::DigGEMData_t Harm_FT_Dig;
-   //TSBSGeant4::TrackerData_t Harm_FT_Track;
-   
-   // Hadronic calorimeter hits
-   // An example for how to simplify tree objects
-   // TODO: Don't hard code detectors here, but rather read them in
-   // through a database if possible
-   // TSBSGeant4::CalData_t      hcalbox;
-   TSBSGeant4::CalData_t Harm_HCalScint;
-   TSBSGeant4::DigSampCalData_t Harm_HCal_Dig;
-   //TSBSGeant4::ECalData_t     hcal;
-   //TSBSGeant4::ECalPartData_t hcalpart;
-
-   // GEn-RP Active analyzer hits
-   TSBSGeant4::CalData_t Harm_ActAnScint;
-   //TSBSGeant4::DigTimingData_t Harm_ActAn_Dig;
-   TSBSGeant4::DigSampCalData_t Harm_ActAn_Dig;
-   
-   // GEn-RP PR polarimeter Scintillators hits;
-   TSBSGeant4::CalData_t Harm_PRPolScintBeamSide;
-   TSBSGeant4::DigTimingData_t Harm_PRPolScintBeamSide_Dig;
-   TSBSGeant4::CalData_t Harm_PRPolScintFarSide;
-   TSBSGeant4::DigTimingData_t Harm_PRPolScintFarSide_Dig;
-   
-   // GEn-RP PR polarimeter Scintillators hits;
-   TSBSGeant4::GEMData_t Harm_CEPolFront;
-   TSBSGeant4::DigGEMData_t Harm_CEPolFront_Dig;
-   TSBSGeant4::GEMData_t Harm_CEPolRear;
-   TSBSGeant4::DigGEMData_t Harm_CEPolRear_Dig;
-   
-   TSBSGeant4::GEMData_t Harm_PrPolGEMBeamSide;
-   TSBSGeant4::DigGEMData_t Harm_PrPolGEMBeamSide_Dig;
-   TSBSGeant4::GEMData_t Harm_PrPolGEMFarSide;
-   TSBSGeant4::DigGEMData_t Harm_PrPolGEMFarSide_Dig;
-   
    //SBS GEMs variables
    TSBSGeant4::GEMData_t Harm_SBSGEM;
    TSBSGeant4::DigGEMData_t Harm_SBSGEM_Dig;
    
    //TSBSGeant4::TrackerData_t Harm_SBSGEM_Track;
-
-   // RICH variables
-   TSBSGeant4::RICHData_t Harm_RICH;
-   TSBSGeant4::DigTimingData_t Harm_RICH_Dig;
 
    //Pythia variables
    Double_t              primaries_Sigma;
