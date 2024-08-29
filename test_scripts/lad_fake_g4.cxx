@@ -23,10 +23,12 @@ void CreateTree() {
   vector<double> edep;
 
   // Set min and max values for random generation
-  int minPlane   = 1;
-  int maxPlane   = 10;
-  int minPaddle  = 1;
+  int minPlane   = 0;
+  int maxPlane   = 4;
+  int minPaddle  = 0;
   int maxPaddle  = 10;
+  int minNhits   = 1;
+  int maxNhits   = 6;
   double minXhit = 0.0;
   double maxXhit = 1.0;
   double minYhit = 0.0;
@@ -55,7 +57,7 @@ void CreateTree() {
   // Fill the tree with some example data
   double nEvents = 20;
   for (int i = 0; i < nEvents; i++) {
-    nHits = 3;
+    nHits = rand() % (maxNhits - minNhits + 1) + minNhits;
     plane.resize(nHits);
     paddle.resize(nHits);
     xhit.resize(nHits);

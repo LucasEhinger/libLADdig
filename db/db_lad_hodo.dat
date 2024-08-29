@@ -6,7 +6,7 @@ TriggerJitter 3.0
 detectors_list bbhodo 
 
 ## parameters for bbhodo
-NChan_bbhodo 180 
+NChan_bbhodo 110
 gatewidth_bbhodo 100 
 gain_bbhodo 1.0e5
 ped_bbhodo 500.0 

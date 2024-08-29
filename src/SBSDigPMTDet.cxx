@@ -1,6 +1,5 @@
 #include "SBSDigPMTDet.h"
 #include "TMath.h"
-#define DEBUG 0
 
 using namespace std;
 
