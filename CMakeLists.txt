@@ -73,7 +73,7 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/src/*.h)
 ## Append a few extra header files in the repository.  (But do not append the
 ## sbs_LinkDef.h header here, that is further down this cmake config.
 #list(APPEND headers "src/g4sbs_types.h" "libsbsgem/types.h")
-list(APPEND headers "src/g4sbs_types.h")
+# list(APPEND headers "src/g4sbs_types.h")
 
 
 string(REPLACE "src/" "" dictheaders1 "${headers}")
@@ -117,7 +117,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
 ##----------------------------------------------------------------------------
 ## Setup the G4SBS library
-find_package(G4SBS REQUIRED)
+# find_package(G4SBS REQUIRED)
 
 
 ##----------------------------------------------------------------------------
@@ -131,7 +131,7 @@ endif()
 ##----------------------------------------------------------------------------
 ## OS Type (not sure what exactly uses this, but since it's in the Makefile
 ## I'll just copy it here too...
-set(SBSDIG_LINKFLAGS "")
+# set(SBSDIG_LINKFLAGS "")
 if(UNIX) ## Can be anything from Linux to Mac OS X
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fPIC -O -g")
   if(APPLE)
@@ -161,7 +161,8 @@ if(VERBOSE)
 endif()
 
 #include_directories(${ROOT_INCLUDE_DIR} ${Podd_INCLUDE_DIR} ${SBS_INCLUDE_DIR} ${PROJECT_SOURCE_DIR}/src ${PROJECT_SOURCE_DIR}/libsbsgem)
-include_directories(${ROOT_INCLUDE_DIR} ${G4SBS_INCLUDE_DIR} ${PROJECT_SOURCE_DIR}/src)
+# include_directories(${ROOT_INCLUDE_DIR} ${G4SBS_INCLUDE_DIR} ${PROJECT_SOURCE_DIR}/src)
+include_directories(${ROOT_INCLUDE_DIR} ${PROJECT_SOURCE_DIR}/src)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ROOT_CXX_FLAGS}")
 
 ## Generate the ROOT dictionary

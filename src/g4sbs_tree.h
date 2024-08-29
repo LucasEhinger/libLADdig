@@ -27,7 +27,7 @@
 
 // Header file for the classes stored in the TTree if any.
 #include <vector>
-#include "sbstypes.hh"
+// #include "sbstypes.h"
 #include "g4sbs_data.h"
 #include "g4sbs_types.h"
 // Fixed size dimensions of array or collections stored in the TTree if any.

@@ -1,0 +1,22 @@
+#Random seed
+Rseed 0
+#global trigger jitter for all detectors in ns
+TriggerJitter 3.0 
+#list of detectors to digitize
+detectors_list bbhodo 
+
+## parameters for bbhodo
+NChan_bbhodo 180 
+gatewidth_bbhodo 100 
+gain_bbhodo 1.0e5
+ped_bbhodo 500.0 
+pedsigma_bbhodo 3.0
+trigoffset_bbhodo 18.6 
+threshold_bbhodo 3.e-3 
+ADCconv_bbhodo 100 
+#ADCbits_bbhodo 12 
+TDCconv_bbhodo 0.1 
+TDCbits_bbhodo 19 
+sigmapulse_bbhodo 1.6 
+
+endconfig

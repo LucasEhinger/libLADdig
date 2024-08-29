@@ -729,7 +729,48 @@ void PMTSignal::Digitize(int chan, int detid, g4sbs_tree* T, //gmn_tree* T,
       T->Earm_BBHodo_Dig.tdc_t->push_back(-1000000);
     }
   }
-  
+
+  // start: uncomment old hodo sbs code
+  // if(detid==HODO_UNIQUE_DETID){
+  //   // T->Earm_BBHodo_dighit_nchan++;
+  //   // T->Earm_BBHodo_dighit_chan->push_back(chan);
+  //   // T->Earm_BBHodo_dighit_adc->push_back(fADC);
+  //   T->Earm_BBHodo_Dig.nchan++;
+  //   T->Earm_BBHodo_Dig.chan->push_back(chan);
+  //   T->Earm_BBHodo_Dig.adc->push_back(fADC);
+  //   if(fTDCs.size()){
+  //     for(int j = 0;j<fTDCs.size(); j++){
+	// if(fTDCs[j] & ( 1 << (31) )){
+	//   fTDCs[j] ^= ( -0 ^ fTDCs[j] ) & ( 1 << (31) );
+	//   //T->Earm_BBHodo_dighit_tdc_t->push_back(fTDCs[j]-1000);
+	//   T->Earm_BBHodo_Dig.tdc_t->push_back(fTDCs[j]);
+	// }else{
+	//   //T->Earm_BBHodo_dighit_tdc_l->push_back(fTDCs[j]-1000);
+	//   T->Earm_BBHodo_Dig.tdc_l->push_back(fTDCs[j]);
+	// }
+  //     }
+  //     // equalize the hits:
+  //     int max_size = max(T->Earm_BBHodo_Dig.tdc_l->size(), T->Earm_BBHodo_Dig.tdc_t->size());
+  //     max_size = max(max_size, T->Earm_BBHodo_Dig.nchan);
+  //     while(T->Earm_BBHodo_Dig.nchan<max_size){
+	// T->Earm_BBHodo_Dig.nchan++;
+	// T->Earm_BBHodo_Dig.chan->push_back(chan);
+	// T->Earm_BBHodo_Dig.adc->push_back(-1000000);
+  //     }
+  //     while(T->Earm_BBHodo_Dig.tdc_l->size()<max_size){
+	// T->Earm_BBHodo_Dig.tdc_l->push_back(-1000000);
+  //     }
+  //     while(T->Earm_BBHodo_Dig.tdc_t->size()<max_size){
+	// T->Earm_BBHodo_Dig.tdc_t->push_back(-1000000);
+  //     }
+      
+  //   }else{
+  //     T->Earm_BBHodo_Dig.tdc_l->push_back(-1000000);
+  //     T->Earm_BBHodo_Dig.tdc_t->push_back(-1000000);
+  //   }
+  // }
+  // End old uncomment 
+
   if(detid==CDET_UNIQUE_DETID){
     // T->Earm_CDet_dighit_nchan++;
     // T->Earm_CDet_dighit_chan->push_back(chan);

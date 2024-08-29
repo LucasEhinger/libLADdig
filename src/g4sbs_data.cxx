@@ -26,28 +26,29 @@ namespace TSBSGeant4 {
   bool CalData_t::SetupBranches(TTree *tree, const char* prefix)
   {
     int ret = 0;
+    //hodo routes here
     ret += SetupBranch(tree,prefix,"nhits", nhits);
-    ret += SetupBranch(tree,prefix,"row", row);
-    ret += SetupBranch(tree,prefix,"col", col);
+    // ret += SetupBranch(tree,prefix,"row", row);
+    // ret += SetupBranch(tree,prefix,"col", col);
     ret += SetupBranch(tree,prefix,"cell", cell);
     ret += SetupBranch(tree,prefix,"plane", plane);
-    ret += SetupBranch(tree,prefix,"xcell", xcell);
-    ret += SetupBranch(tree,prefix,"ycell", ycell);
-    ret += SetupBranch(tree,prefix,"zcell", zcell);
-    ret += SetupBranch(tree,prefix,"xcellg", xcellg);
-    ret += SetupBranch(tree,prefix,"ycellg", ycellg);
-    ret += SetupBranch(tree,prefix,"zcellg", zcellg);
+    // ret += SetupBranch(tree,prefix,"xcell", xcell);
+    // ret += SetupBranch(tree,prefix,"ycell", ycell);
+    // ret += SetupBranch(tree,prefix,"zcell", zcell);
+    // ret += SetupBranch(tree,prefix,"xcellg", xcellg);
+    // ret += SetupBranch(tree,prefix,"ycellg", ycellg);
+    // ret += SetupBranch(tree,prefix,"zcellg", zcellg);
     ret += SetupBranch(tree,prefix,"xhit", xhit);
     ret += SetupBranch(tree,prefix,"yhit", yhit);
     ret += SetupBranch(tree,prefix,"zhit", zhit);
-    ret += SetupBranch(tree,prefix,"xhitg", xhitg);
-    ret += SetupBranch(tree,prefix,"yhitg", yhitg);
-    ret += SetupBranch(tree,prefix,"zhitg", zhitg);
+    // ret += SetupBranch(tree,prefix,"xhitg", xhitg);
+    // ret += SetupBranch(tree,prefix,"yhitg", yhitg);
+    // ret += SetupBranch(tree,prefix,"zhitg", zhitg);
     ret += SetupBranch(tree,prefix,"sumedep", sumedep);
     ret += SetupBranch(tree,prefix,"tavg", tavg);
-    ret += SetupBranch(tree,prefix,"trms", trms);
-    ret += SetupBranch(tree,prefix,"tmin", tmin);
-    ret += SetupBranch(tree,prefix,"tmax", tmax);
+    // ret += SetupBranch(tree,prefix,"trms", trms);
+    // ret += SetupBranch(tree,prefix,"tmin", tmin);
+    // ret += SetupBranch(tree,prefix,"tmax", tmax);
     return (ret ==0);
   }
   
