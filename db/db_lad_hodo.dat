@@ -18,5 +18,8 @@ ADCconv_bbhodo 100
 TDCconv_bbhodo 0.1 
 TDCbits_bbhodo 19 
 sigmapulse_bbhodo 1.6 
+timewalk_bbhodo 0.0
+timeoffset_bbhodo 0.0
+
 
 endconfig

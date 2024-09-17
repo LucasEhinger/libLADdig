@@ -82,7 +82,10 @@ bool SPEModel::FindPeakTimeAmp(double charge, double thr, double &amp_peak, doub
     amp_peak = 1.0e38;
     return false;
   } else {
-    amp_peak = fPulseHisto->GetMaximum() * charge;
+#include <cmath>
+
+double result = std::pow(10, 123);
+    amp_peak = fPulseHisto->GetMaximum() * charge*(std::pow(10, 12));
     // Really necessary??? the time peak is at zero by definition of the reference histogram...
     /*
     int binmax = fPulseHisto->GetMaximumBin();
@@ -94,6 +97,7 @@ bool SPEModel::FindPeakTimeAmp(double charge, double thr, double &amp_peak, doub
               fPulseHisto->GetBinContent(binmax+1));
     */
     t_peak = 0.0; //...
+    return true;
   }
 }
 
@@ -151,6 +155,15 @@ void PMTSignal::Fill(SPEModel *model, int npe, double thr, double evttime, int s
   bool goodtime = model->FindLeadTrailTime(npe * fNpeChargeConv, thr, t_lead, t_trail);
 
   // if(goodtime)cout << evttime << " " << t_lead << " " << t_trail << endl;
+
+  if (goodtime) {
+    // TODO: Isn't comparable with multiple peaks
+    double amp_peak, t_peak;
+
+    if (model->FindPeakTimeAmp(npe * fNpeChargeConv, thr, amp_peak, t_peak)) {
+      fPeakAmps.push_back(amp_peak);
+    }
+  }
 
   t_lead += evttime;
   t_trail += evttime;
@@ -438,14 +451,12 @@ void PMTSignal::Fill_FADCmode7(SPEModel *model, int npe, double thr, double evtt
            // evttime_offset+(k+1)*80-1);//fPulseHisto->Integral(evttime_offset+k*80, evttime_offset+(k+1)*80, "width");
   }
 
-  /*
   double amp_peak, t_peak;
 
-  if(model->FindPeakTimeAmp(npe*fNpeChargeConv, thr, amp_peak, t_peak)){
-    fLeadTimes.push_back(t_peak+evttime);
+  if (model->FindPeakTimeAmp(npe * fNpeChargeConv, thr, amp_peak, t_peak)) {
+    fLeadTimes.push_back(t_peak + evttime);
     fPeakAmps.push_back(amp_peak);
   }
-  */
 }
 
 void PMTSignal::Digitize(int chan, int detid, g4sbs_tree *T, // gmn_tree* T,
@@ -461,11 +472,6 @@ void PMTSignal::Digitize(int chan, int detid, g4sbs_tree *T, // gmn_tree* T,
   if (fADC > UInt_t(TMath::Nint(TMath::Power(2, ADCbits)))) {
     fADC = TMath::Nint(TMath::Power(2, ADCbits));
   }
-
-  // if(fPeakAmps.size()){
-  // for(int i = 0; i<fPeakAmps.size(); i++){
-  // }
-  // }
 
   Int_t tdc_value;
   if (fLeadTimes.size()) {
@@ -516,16 +522,20 @@ void PMTSignal::Digitize(int chan, int detid, g4sbs_tree *T, // gmn_tree* T,
         fADCSamples[i] = 4095;
 
       fADC += fADCSamples[i];
-      /*
-      if(i_tc<0 && fADCSamples[i]>thr_adc)i_tc = i;
-      if(fADCSamples[i]>vpeak){
-        vpeak = fADCSamples[i];
-        i_max = i;
-      }
-      if(i<4)vmin+= fADCSamples[i]/4;
-      */
+      // /*
+      // if(i_tc<0 && fADCSamples[i]>thr_adc)i_tc = i;
+      // if(fADCSamples[i]>vpeak){
+      //   vpeak = fADCSamples[i];
+      //   i_max = i;
+      // }
+      // if(i<4)vmin+= fADCSamples[i]/4;
+      // */
     }
     // if(detid==ACTIVEANA_UNIQUE_DETID)cout << endl;
+  }
+  double peak_amp = 0.0;
+  if (!fPeakAmps.empty()) {
+    peak_amp = *std::max_element(fPeakAmps.begin(), fPeakAmps.end());
   }
   // fSumEdep*=1.0e9;// store in eV.
 
@@ -538,6 +548,7 @@ void PMTSignal::Digitize(int chan, int detid, g4sbs_tree *T, // gmn_tree* T,
     T->Earm_BBHodo_Dig.nchan++;
     T->Earm_BBHodo_Dig.chan->push_back(chan);
     T->Earm_BBHodo_Dig.adc->push_back(fADC);
+    T->Earm_BBHodo_Dig.amp->push_back(peak_amp);
     if (fTDCs.size()) {
       for (int j = 0; j < fTDCs.size(); j++) {
         if (fTDCs[j] & (1 << (31))) {
@@ -556,6 +567,7 @@ void PMTSignal::Digitize(int chan, int detid, g4sbs_tree *T, // gmn_tree* T,
         T->Earm_BBHodo_Dig.nchan++;
         T->Earm_BBHodo_Dig.chan->push_back(chan);
         T->Earm_BBHodo_Dig.adc->push_back(-1000000);
+        T->Earm_BBHodo_Dig.amp->push_back(-1000000);
       }
       while (T->Earm_BBHodo_Dig.tdc_l->size() < max_size) {
         T->Earm_BBHodo_Dig.tdc_l->push_back(-1000000);

@@ -12,13 +12,14 @@ bool UnfoldData(g4sbs_tree *T, double theta_sbs, double d_hcal, TRandom3 *R, std
   int Npe;
   double t;
 
-  double x_ref = -d_hcal * sin(theta_sbs);
-  double z_ref = d_hcal * cos(theta_sbs);
+  // These vars are unused, so commenting them out for now (LHE)
+  // double x_ref = -d_hcal * sin(theta_sbs);
+  // double z_ref = d_hcal * cos(theta_sbs);
 
-  double z_hit, Npe_Edep_ratio, sigma_tgen;
+  // double z_hit, Npe_Edep_ratio, sigma_tgen;
 
   // double z_det, pz, E,
-  double beta, sin2thetaC;
+  // double beta, sin2thetaC;
 
   int chan;
   int mod;
@@ -39,6 +40,8 @@ bool UnfoldData(g4sbs_tree *T, double theta_sbs, double d_hcal, TRandom3 *R, std
     if (idet >= detmap.size())
       idet = -1;
 
+    double detector_z   = 2.0;
+    double index_of_ref = 2.0;
     if (idet >= 0) { // && T->Earm_BBHodoScint.nhits){
       for (int i = 0; i < T->Earm_BBHodoScint.nhits; i++) {
         for (int j = 0; j < 2;
@@ -46,10 +49,13 @@ bool UnfoldData(g4sbs_tree *T, double theta_sbs, double d_hcal, TRandom3 *R, std
           // Evaluation of number of photoelectrons and time from energy deposit documented at:
           // https://hallaweb.jlab.org/dvcslog/SBS/170711_172759/BB_hodoscope_restudy_update_20170711.pdf
           Npe = R->Poisson(1.0e7 * T->Earm_BBHodoScint.sumedep->at(i) * 0.113187 *
-                           exp(-(0.3 + pow(-1, j) * T->Earm_BBHodoScint.xhit->at(i)) / 1.03533) * 0.24);
-          t   = tzero + T->Earm_BBHodoScint.tavg->at(i) + (0.55 + pow(-1, j) * T->Earm_BBHodoScint.xhit->at(i)) / 0.15 -
-              pmtdets[idet]->fTrigOffset;
+                           exp(-(detector_z / 2 + pow(-1, j) * T->Earm_BBHodoScint.zhit->at(i)) / 1.03533) * 0.24);
+          t   = tzero + T->Earm_BBHodoScint.tavg->at(i) +
+              (0.4 + detector_z / 2 + pow(-1, j) * T->Earm_BBHodoScint.zhit->at(i)) / (0.3 / index_of_ref) -
+              pmtdets[idet]->fTrigOffset; // Assume 0.4 is some sort of distance offset for the cables + pmt's.
           chan = 2 * (T->Earm_BBHodoScint.plane->at(i) * 11 + T->Earm_BBHodoScint.paddle->at(i)) + j;
+          t += pmtdets[idet]->fTimeOffset[chan];
+          t += pmtdets[idet]->fTimeWalk[chan];// / sqrt(Npe);
           // T->Earm_BBHodoScint_hit_sumedep->at(i);
           // if(chan>pmtdets[idet]->fNChan)cout << chan << endl;
           pmtdets[idet]->PMTmap[chan].Fill(pmtdets[idet]->fRefPulse, Npe, pmtdets[idet]->fThreshold, t, signal);

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void CreateTree() {
+void CreateTree(int nEvents = 20) {
   // Create a ROOT file
   TFile *file = new TFile("lad_hodo_sim.root", "RECREATE");
 
@@ -29,17 +29,17 @@ void CreateTree() {
   int maxPaddle  = 10;
   int minNhits   = 1;
   int maxNhits   = 6;
-  double minXhit = 0.0;
+  double minXhit = -1.0;
   double maxXhit = 1.0;
-  double minYhit = 0.0;
+  double minYhit = -1.0;
   double maxYhit = 1.0;
-  double minZhit = 0.0;
+  double minZhit = -1.0;
   double maxZhit = 1.0;
   double minT    = 0.0;
-  double maxT    = 1.0;
+  double maxT    = 0.0;
   double minBeta = 0.0;
   double maxBeta = 1.0;
-  double minEdep = 1. / 1000;
+  double minEdep = 1. / 100000;
   double maxEdep = 1. / 100;
 
   string prefix = "LAD.Hodo.hit.";
@@ -55,7 +55,6 @@ void CreateTree() {
   tree->Branch((prefix + "sumedep").c_str(), &edep);
 
   // Fill the tree with some example data
-  double nEvents = 20;
   for (int i = 0; i < nEvents; i++) {
     nHits = rand() % (maxNhits - minNhits + 1) + minNhits;
     plane.resize(nHits);
@@ -87,8 +86,8 @@ void CreateTree() {
   delete file;
 }
 
-int lad_fake_g4() {
-  CreateTree();
+int lad_fake_g4(double nEvents = 20) {
+  CreateTree(nEvents);
 
   return 0;
 }

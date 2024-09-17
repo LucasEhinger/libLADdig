@@ -132,15 +132,17 @@ struct DigTimingData_t : public VDetData_t {
   std::vector<Int_t> *adc;
   std::vector<Int_t> *tdc_l;
   std::vector<Int_t> *tdc_t;
+  std::vector<Int_t> *amp;
 
   TBranch *b_nchan; //!
   TBranch *b_chan;  //!
   TBranch *b_adc;   //!
   TBranch *b_tdc_l; //!
   TBranch *b_tdc_t; //!
+  TBranch *b_amp;   //!
 
   DigTimingData_t()
-      : nchan(0), chan(0), adc(0), tdc_l(0), tdc_t(0), b_nchan(0), b_chan(0), b_adc(0), b_tdc_l(0), b_tdc_t(0) {};
+      : nchan(0), chan(0), adc(0), tdc_l(0), tdc_t(0), amp(0), b_nchan(0), b_chan(0), b_adc(0), b_tdc_l(0), b_tdc_t(0), b_amp(0) {};
   virtual ~DigTimingData_t() {};
   virtual bool SetupBranches(TTree *t, const char *prefix);
   void ClearBranches();

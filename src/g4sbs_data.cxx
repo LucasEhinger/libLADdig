@@ -181,12 +181,14 @@ namespace TSBSGeant4 {
     adc = new std::vector<int>;
     tdc_l = new std::vector<int>;
     tdc_t = new std::vector<int>;
+    amp = new std::vector<int>;
     
     b_nchan = tree->Branch(Form("%s.nchan", prefix), &nchan);
     b_chan = tree->Branch(Form("%s.chan", prefix), &chan);
     b_adc = tree->Branch(Form("%s.adc", prefix), &adc);
     b_tdc_l = tree->Branch(Form("%s.tdc_l", prefix), &tdc_l);
     b_tdc_t = tree->Branch(Form("%s.tdc_t", prefix), &tdc_t);
+    b_amp = tree->Branch(Form("%s.amp", prefix), &amp);
     return true;
   }
   
@@ -198,10 +200,11 @@ namespace TSBSGeant4 {
       adc->clear();
       tdc_l->clear();
       tdc_t->clear();
+      amp->clear();
     }
   }
   
-  void DigTimingData_t::FillBranches()
+  void DigTimingData_t::FillBranches() // hodo
   {
     if(b_nchan){
       b_nchan->Fill();
@@ -209,6 +212,7 @@ namespace TSBSGeant4 {
       b_adc->Fill();
       b_tdc_l->Fill();
       b_tdc_t->Fill();
+      b_amp->Fill();
     }
   }
   

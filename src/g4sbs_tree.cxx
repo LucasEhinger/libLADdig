@@ -93,16 +93,11 @@ void g4sbs_tree::Init(TTree *tree, std::vector<TString> det_list, bool sig_br) {
     return;
   fChain   = tree;
   fCurrent = -1;
-  // (jc2): Why do we want to make a class again??
-  // I disabled this so that we can force the tree to check each
-  // SetBranchStatus for matches.
-  // fChain->SetMakeClass(1);
 
   // Setup "Event branch": can be useful
   // fChain->SetBranchAddress("ev", &ev_count, &b_ev);
 
   for (int k = 0; k < det_list.size(); k++) {
-    // GMN/GEN
     if (det_list[k] == "bbhodo") {
       printf(" bbhodo branches set up! \n");
       SetupDetBranch(Earm_BBHodoScint, "LAD.Hodo.hit");

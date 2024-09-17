@@ -17,7 +17,6 @@
 #include <TROOT.h>
 
 // includes: specific
-//  #include "G4SBSRunData.hh"//need to import
 #include "SBSDigAuxi.h"
 #include "SBSDigBkgdGen.h"
 #include "SBSDigGEMDet.h"
@@ -86,8 +85,8 @@ int main(int argc, char **argv) {
 
   std::vector<TString> detectors_list;
 
-  const int nparam_pmtdet_adc  = 12;
-  const int nparam_pmtdet_fadc = 11;
+  // const int nparam_pmtdet_adc  = 12;
+  const int nparam_pmtdet_fadc = 13;
   const int nparam_gemdet      = 12;
 
   int nparam_bbhodo_read    = 0;
@@ -103,6 +102,8 @@ int main(int argc, char **argv) {
   Double_t TDCconv_bbhodo    = 0.1;
   Int_t TDCbits_bbhodo       = 19;
   Double_t sigmapulse_bbhodo = 1.6;
+  std::vector<Double_t> timewalk_bbhodo(110, 0);
+  std::vector<Double_t> timeoffset_bbhodo(110, 0);
 
   int nparam_bbgem_read    = 0;
   Int_t NPlanes_bbgem      = 32; // number of planes/modules/readout
@@ -258,6 +259,44 @@ int main(int argc, char **argv) {
         if (skey == "sigmapulse_bbhodo") {
           TString stemp     = ((TObjString *)(*tokens)[1])->GetString();
           sigmapulse_bbhodo = stemp.Atof();
+          nparam_bbhodo_read++;
+        }
+
+        if (skey == "timewalk_bbhodo") {
+          timewalk_bbhodo.resize(NChan_bbhodo);
+          if (ntokens == NChan_bbhodo + 1) {
+            for (int k = 0; k < NChan_bbhodo; k++) {
+              TString stemp      = ((TObjString *)(*tokens)[k + 1])->GetString();
+              timewalk_bbhodo[k] = stemp.Atof();
+            }
+          } else {
+            cout << ntokens - 1 << " entries for " << skey << " dont match number of channels = " << NChan_bbhodo
+                 << endl
+                 << " applying first value on all planes " << endl;
+            TString stemp = ((TObjString *)(*tokens)[1])->GetString();
+            for (int k = 0; k < NChan_bbhodo; k++) {
+              timewalk_bbhodo[k] = stemp.Atof();
+            }
+          }
+          nparam_bbhodo_read++;
+        }
+
+        if (skey == "timeoffset_bbhodo") {
+          timeoffset_bbhodo.resize(NChan_bbhodo);
+          if (ntokens == NChan_bbhodo + 1) {
+            for (int k = 0; k < NChan_bbhodo; k++) {
+              TString stemp        = ((TObjString *)(*tokens)[k + 1])->GetString();
+              timeoffset_bbhodo[k] = stemp.Atof();
+            }
+          } else {
+            cout << ntokens - 1 << " entries for " << skey << " dont match number of channels = " << NChan_bbhodo
+                 << endl
+                 << " applying first value on all planes " << endl;
+            TString stemp = ((TObjString *)(*tokens)[1])->GetString();
+            for (int k = 0; k < NChan_bbhodo; k++) {
+              timeoffset_bbhodo[k] = stemp.Atof();
+            }
+          }
           nparam_bbhodo_read++;
         }
 
@@ -667,6 +706,8 @@ int main(int argc, char **argv) {
       bbhodo->fADCbits    = ADCbits_bbhodo;
       bbhodo->fTDCconv    = TDCconv_bbhodo;
       bbhodo->fTDCbits    = TDCbits_bbhodo;
+      bbhodo->fTimeWalk   = timewalk_bbhodo;
+      bbhodo->fTimeOffset = timeoffset_bbhodo;
 
       PMTdetectors.push_back(bbhodo);
       detmap.push_back(HODO_UNIQUE_DETID);
