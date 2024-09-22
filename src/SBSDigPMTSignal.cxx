@@ -84,8 +84,8 @@ bool SPEModel::FindPeakTimeAmp(double charge, double thr, double &amp_peak, doub
   } else {
 #include <cmath>
 
-double result = std::pow(10, 123);
-    amp_peak = fPulseHisto->GetMaximum() * charge*(std::pow(10, 12));
+    double result = std::pow(10, 123);
+    amp_peak      = fPulseHisto->GetMaximum() * charge * (std::pow(10, 12));
     // Really necessary??? the time peak is at zero by definition of the reference histogram...
     /*
     int binmax = fPulseHisto->GetMaximumBin();
@@ -123,7 +123,8 @@ PMTSignal::PMTSignal()
       fNSamps(0) {
   fLeadTimes.clear();
   fTrailTimes.clear();
-  fTDCs.clear();
+  fTDC_l.clear();
+  fTDC_t.clear();
 
   fPeakAmps.clear();
   // f1 = 0;
@@ -135,7 +136,8 @@ PMTSignal::PMTSignal(double npechargeconv)
       fNADCSamps(0), fNSamps(0) {
   fLeadTimes.clear();
   fTrailTimes.clear();
-  fTDCs.clear();
+  fTDC_l.clear();
+  fTDC_t.clear();
 
   fPeakAmps.clear();
   // f1 = 0;
@@ -146,6 +148,8 @@ void PMTSignal::Fill(SPEModel *model, int npe, double thr, double evttime, int s
     fEventTime = evttime;
   fNpe += npe;
   // if(model->PulseOverThr(fCharge, thr))fNpe//fADC = model->GetCharge()*model->GetADCconversion();
+
+  // cout << evttime << endl;
 
   // determine lead and trail times
   double t_lead, t_trail;
@@ -165,8 +169,8 @@ void PMTSignal::Fill(SPEModel *model, int npe, double thr, double evttime, int s
     }
   }
 
-  t_lead += evttime;
-  t_trail += evttime;
+  t_lead += fEventTime;
+  t_trail += fEventTime;
 
   if (goodtime) {
     // Filter here the lead and trail times
@@ -467,13 +471,13 @@ void PMTSignal::Digitize(int chan, int detid, g4sbs_tree *T, // gmn_tree* T,
     return;
   }
 
-  fADC = TMath::Nint(Charge() * 1.0e15 / ADCconv + R->Gaus(ped, ped_noise));
+  fADC = (Charge() * 1.0e15 / ADCconv + R->Gaus(ped, ped_noise));// No longer casting to Int
 
-  if (fADC > UInt_t(TMath::Nint(TMath::Power(2, ADCbits)))) {
-    fADC = TMath::Nint(TMath::Power(2, ADCbits));
+  if (fADC > UInt_t((TMath::Power(2, ADCbits)))) { // No longer casting to Int
+    fADC = (TMath::Power(2, ADCbits));// No longer casting to Int
   }
 
-  Int_t tdc_value;
+  double tdc_value;
   if (fLeadTimes.size()) {
     for (size_t i = 0; i < fLeadTimes.size(); i++) {
       // cout << "detid " << detid << " fLeadTimes.at(" << i << ") " << fLeadTimes.at(i) << " fTrailTimes.at(" << i <<
@@ -481,21 +485,12 @@ void PMTSignal::Digitize(int chan, int detid, g4sbs_tree *T, // gmn_tree* T,
       //  trim "all" bits that are above the number of TDC bits - a couple to speed it up
       //  (since TDC have a revolving clock, as far as I understand)
       //  let's use an arbitrary reference time offset of 1000 (?) TDC chans before the trigger
-      tdc_value = TMath::Nint((fLeadTimes.at(i)) / TDCconv) + 1000;
-      for (int j = 30; j >= TDCbits; j--) {
-        tdc_value ^= (-0 ^ tdc_value) & (1 << (j));
-      }
-      tdc_value ^= (-0 ^ tdc_value) & (1 << (31));
-      // fTDCs.insert(fTDCs.begin()+0, TMath::Nint(fLeadTimes.at(0)*diginfo.TDCConversion()));//bug!!!!
-      fTDCs.push_back(tdc_value); // they're already sorted in order, presumably
+      tdc_value = ((fLeadTimes.at(i)) / TDCconv) + 1000;// No longer casting to Int
+      fTDC_l.push_back(tdc_value); // they're already sorted in order, presumably
       // also mark the traling time with setting bin 31 to 1 // need to reconvert then
       if (fTrailTimes.size()) {
-        tdc_value = TMath::Nint((fTrailTimes.at(i)) / TDCconv) + 1000;
-        for (int j = 30; j >= TDCbits; j--) {
-          tdc_value ^= (-0 ^ tdc_value) & (1 << (j));
-        }
-        tdc_value ^= (-1 ^ tdc_value) & (1 << (31));
-        fTDCs.push_back(tdc_value);
+        tdc_value = ((fTrailTimes.at(i)) / TDCconv) + 1000; // No longer casting to Int
+        fTDC_t.push_back(tdc_value);
       }
     }
   }
@@ -549,16 +544,10 @@ void PMTSignal::Digitize(int chan, int detid, g4sbs_tree *T, // gmn_tree* T,
     T->Earm_BBHodo_Dig.chan->push_back(chan);
     T->Earm_BBHodo_Dig.adc->push_back(fADC);
     T->Earm_BBHodo_Dig.amp->push_back(peak_amp);
-    if (fTDCs.size()) {
-      for (int j = 0; j < fTDCs.size(); j++) {
-        if (fTDCs[j] & (1 << (31))) {
-          fTDCs[j] ^= (-0 ^ fTDCs[j]) & (1 << (31));
-          // T->Earm_BBHodo_dighit_tdc_t->push_back(fTDCs[j]-1000);
-          T->Earm_BBHodo_Dig.tdc_t->push_back(fTDCs[j]);
-        } else {
-          // T->Earm_BBHodo_dighit_tdc_l->push_back(fTDCs[j]-1000);
-          T->Earm_BBHodo_Dig.tdc_l->push_back(fTDCs[j]);
-        }
+    if (fTDC_l.size()) {
+      for (int j = 0; j < fTDC_l.size(); j++) {
+          T->Earm_BBHodo_Dig.tdc_t->push_back(fTDC_t[j]);
+          T->Earm_BBHodo_Dig.tdc_l->push_back(fTDC_l[j]);
       }
       // equalize the hits:
       int max_size = max(T->Earm_BBHodo_Dig.tdc_l->size(), T->Earm_BBHodo_Dig.tdc_t->size());
@@ -613,7 +602,8 @@ void PMTSignal::Clear(bool dosamples) {
   fEventTime = 0;
   fLeadTimes.clear();
   fTrailTimes.clear();
-  fTDCs.clear();
+  fTDC_t.clear();
+  fTDC_l.clear();
 
   fPeakAmps.clear();
 

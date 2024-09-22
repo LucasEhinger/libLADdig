@@ -65,8 +65,9 @@ class PMTSignal {
   double LeadTime(int i){return fLeadTimes.at(i);};
   UInt_t TrailTimesSize(){return fTrailTimes.size();};
   double TrailTime(int i){return fTrailTimes.at(i);};
-  UInt_t TDCSize(){return fTDCs.size();};
-  UInt_t TDC(int i){return fTDCs.at(i);};
+  UInt_t TDCSize(){return fTDC_l.size();};
+  UInt_t TDC_l(int i){return fTDC_l.at(i);};
+  UInt_t TDC_t(int i){return fTDC_t.at(i);};
   //SimEncoder::tdc_data TDCData() { return fTDCData; }
 
   UInt_t ADCSamples(int i){return fADCSamples[i];};
@@ -87,13 +88,14 @@ class PMTSignal {
   double fSumEdep;//Not forced to use it for everything
   UInt_t fNpe;
   double fNpeChargeConv;
-  UInt_t fADC;// One unique ADC value ?
+  double fADC;// One unique ADC value ?
 
   double fEventTime;
   //TDCs: multiple values possible.
   std::vector<double> fLeadTimes;
   std::vector<double> fTrailTimes;
-  std::vector<Int_t> fTDCs;
+  std::vector<double> fTDC_l;
+  std::vector<double> fTDC_t;
   //SimEncoder::tdc_data fTDCData;
   //TRndmManager* fRN;
   std::vector<double> fPeakAmps;

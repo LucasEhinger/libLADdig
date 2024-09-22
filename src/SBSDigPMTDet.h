@@ -37,7 +37,6 @@ public:
   double fTDCbits;
   double fSigmaPulse;
 
-  std::vector<Double_t> fTimeWalk   = std::vector<Double_t>(fNChan, 0.0);
   std::vector<Double_t> fTimeOffset = std::vector<Double_t>(fNChan, 0.0);
 };
 

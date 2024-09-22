@@ -178,10 +178,10 @@ namespace TSBSGeant4 {
   {
     if(!tree)return(false);
     chan = new std::vector<int>;
-    adc = new std::vector<int>;
-    tdc_l = new std::vector<int>;
-    tdc_t = new std::vector<int>;
-    amp = new std::vector<int>;
+    adc = new std::vector<double>;
+    tdc_l = new std::vector<double>;
+    tdc_t = new std::vector<double>;
+    amp = new std::vector<double>;
     
     b_nchan = tree->Branch(Form("%s.nchan", prefix), &nchan);
     b_chan = tree->Branch(Form("%s.chan", prefix), &chan);

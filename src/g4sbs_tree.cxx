@@ -12,6 +12,8 @@
 g4sbs_tree::g4sbs_tree(TTree *tree, std::vector<TString> det_list, bool sig_br) : fChain(0) {
   // if parameter tree is not specified (or zero), connect the file
   // used to generate this class and read the Tree.
+  
+  //TODO: remove this hardcoding
   if (tree == 0) {
     TFile *f = (TFile *)gROOT->GetListOfFiles()->FindObject(
         "/volatile/halla/sbs/efuchey/gmn13.5_elastic_20200228_17/elastic_0.root");

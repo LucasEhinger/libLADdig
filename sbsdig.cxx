@@ -102,7 +102,6 @@ int main(int argc, char **argv) {
   Double_t TDCconv_bbhodo    = 0.1;
   Int_t TDCbits_bbhodo       = 19;
   Double_t sigmapulse_bbhodo = 1.6;
-  std::vector<Double_t> timewalk_bbhodo(110, 0);
   std::vector<Double_t> timeoffset_bbhodo(110, 0);
 
   int nparam_bbgem_read    = 0;
@@ -259,25 +258,6 @@ int main(int argc, char **argv) {
         if (skey == "sigmapulse_bbhodo") {
           TString stemp     = ((TObjString *)(*tokens)[1])->GetString();
           sigmapulse_bbhodo = stemp.Atof();
-          nparam_bbhodo_read++;
-        }
-
-        if (skey == "timewalk_bbhodo") {
-          timewalk_bbhodo.resize(NChan_bbhodo);
-          if (ntokens == NChan_bbhodo + 1) {
-            for (int k = 0; k < NChan_bbhodo; k++) {
-              TString stemp      = ((TObjString *)(*tokens)[k + 1])->GetString();
-              timewalk_bbhodo[k] = stemp.Atof();
-            }
-          } else {
-            cout << ntokens - 1 << " entries for " << skey << " dont match number of channels = " << NChan_bbhodo
-                 << endl
-                 << " applying first value on all planes " << endl;
-            TString stemp = ((TObjString *)(*tokens)[1])->GetString();
-            for (int k = 0; k < NChan_bbhodo; k++) {
-              timewalk_bbhodo[k] = stemp.Atof();
-            }
-          }
           nparam_bbhodo_read++;
         }
 
@@ -706,7 +686,6 @@ int main(int argc, char **argv) {
       bbhodo->fADCbits    = ADCbits_bbhodo;
       bbhodo->fTDCconv    = TDCconv_bbhodo;
       bbhodo->fTDCbits    = TDCbits_bbhodo;
-      bbhodo->fTimeWalk   = timewalk_bbhodo;
       bbhodo->fTimeOffset = timeoffset_bbhodo;
 
       PMTdetectors.push_back(bbhodo);

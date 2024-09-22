@@ -129,10 +129,10 @@ struct DigCalFADC7Data_t : public VDetData_t {
 struct DigTimingData_t : public VDetData_t {
   Int_t nchan;
   std::vector<Int_t> *chan;
-  std::vector<Int_t> *adc;
-  std::vector<Int_t> *tdc_l;
-  std::vector<Int_t> *tdc_t;
-  std::vector<Int_t> *amp;
+  std::vector<double> *adc;
+  std::vector<double> *tdc_l;
+  std::vector<double> *tdc_t;
+  std::vector<double> *amp;
 
   TBranch *b_nchan; //!
   TBranch *b_chan;  //!

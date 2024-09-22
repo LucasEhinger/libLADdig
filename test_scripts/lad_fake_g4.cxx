@@ -6,7 +6,7 @@ using namespace std;
 
 void CreateTree(int nEvents = 20) {
   // Create a ROOT file
-  TFile *file = new TFile("lad_hodo_sim.root", "RECREATE");
+  TFile *file = new TFile("lad_hodo_sim_time_walk.root", "RECREATE");
 
   // Create a TTree
   TTree *tree = new TTree("T", "Hodoscope Hits");
@@ -39,7 +39,7 @@ void CreateTree(int nEvents = 20) {
   double maxT    = 0.0;
   double minBeta = 0.0;
   double maxBeta = 1.0;
-  double minEdep = 1. / 100000;
+  double minEdep = 1. / 1000;
   double maxEdep = 1. / 100;
 
   string prefix = "LAD.Hodo.hit.";
@@ -71,7 +71,8 @@ void CreateTree(int nEvents = 20) {
       paddle[j] = rand() % (maxPaddle - minPaddle + 1) + minPaddle;
       xhit[j]   = (maxXhit - minXhit) * ((double)rand() / RAND_MAX) + minXhit;
       yhit[j]   = (maxYhit - minYhit) * ((double)rand() / RAND_MAX) + minYhit;
-      zhit[j]   = (maxZhit - minZhit) * ((double)rand() / RAND_MAX) + minZhit;
+      // zhit[j]   = (maxZhit - minZhit) * ((double)rand() / RAND_MAX) + minZhit;
+      zhit[j]   = 1.0;
       t[j]      = (maxT - minT) * ((double)rand() / RAND_MAX) + minT;
       beta[j]   = (maxBeta - minBeta) * ((double)rand() / RAND_MAX) + minBeta;
       edep[j]   = (maxEdep - minEdep) * ((double)rand() / RAND_MAX) + minEdep;
