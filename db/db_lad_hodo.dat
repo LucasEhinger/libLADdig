@@ -1,7 +1,7 @@
 #Random seed
 Rseed 0
 #global trigger jitter for all detectors in ns
-TriggerJitter 3.0 
+TriggerJitter 0.0 
 #list of detectors to digitize
 detectors_list bbhodo 
 
