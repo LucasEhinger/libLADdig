@@ -120,7 +120,7 @@ double SPEModel::GetHistoX(double y, double x1, double x2) {
 //
 PMTSignal::PMTSignal()
     : fSumEdep(0), fNpe(0), fNpeChargeConv(1.0), fADC(0), fEventTime(0), fNorm(0), ft0(0), ftau(0), fNADCSamps(0),
-      fNSamps(0) {
+      fNSamps(0), time_offset(1000) {
   fLeadTimes.clear();
   fTrailTimes.clear();
   fTDC_l.clear();
@@ -471,10 +471,10 @@ void PMTSignal::Digitize(int chan, int detid, g4sbs_tree *T, // gmn_tree* T,
     return;
   }
 
-  fADC = (Charge() * 1.0e15 / ADCconv + R->Gaus(ped, ped_noise));// No longer casting to Int
+  fADC = (Charge() * 1.0e15 / ADCconv + R->Gaus(ped, ped_noise)); // No longer casting to Int
 
   if (fADC > UInt_t((TMath::Power(2, ADCbits)))) { // No longer casting to Int
-    fADC = (TMath::Power(2, ADCbits));// No longer casting to Int
+    fADC = (TMath::Power(2, ADCbits));             // No longer casting to Int
   }
 
   double tdc_value;
@@ -485,11 +485,11 @@ void PMTSignal::Digitize(int chan, int detid, g4sbs_tree *T, // gmn_tree* T,
       //  trim "all" bits that are above the number of TDC bits - a couple to speed it up
       //  (since TDC have a revolving clock, as far as I understand)
       //  let's use an arbitrary reference time offset of 1000 (?) TDC chans before the trigger
-      tdc_value = ((fLeadTimes.at(i)) / TDCconv) + 1000;// No longer casting to Int
-      fTDC_l.push_back(tdc_value); // they're already sorted in order, presumably
+      tdc_value = ((fLeadTimes.at(i)) / TDCconv) + time_offset; // No longer casting to Int
+      fTDC_l.push_back(tdc_value);                              // they're already sorted in order, presumably
       // also mark the traling time with setting bin 31 to 1 // need to reconvert then
       if (fTrailTimes.size()) {
-        tdc_value = ((fTrailTimes.at(i)) / TDCconv) + 1000; // No longer casting to Int
+        tdc_value = ((fTrailTimes.at(i)) / TDCconv) + time_offset; // No longer casting to Int
         fTDC_t.push_back(tdc_value);
       }
     }
@@ -544,10 +544,14 @@ void PMTSignal::Digitize(int chan, int detid, g4sbs_tree *T, // gmn_tree* T,
     T->Earm_BBHodo_Dig.chan->push_back(chan);
     T->Earm_BBHodo_Dig.adc->push_back(fADC);
     T->Earm_BBHodo_Dig.amp->push_back(peak_amp);
+    // T->Earm_BBHodo_Dig.amp->push_back(850);
+    T->Earm_BBHodo_Dig.adc_time->push_back(fEventTime + time_offset);
     if (fTDC_l.size()) {
       for (int j = 0; j < fTDC_l.size(); j++) {
-          T->Earm_BBHodo_Dig.tdc_t->push_back(fTDC_t[j]);
-          T->Earm_BBHodo_Dig.tdc_l->push_back(fTDC_l[j]);
+        T->Earm_BBHodo_Dig.tdc_t->push_back(fTDC_t[j]);
+        T->Earm_BBHodo_Dig.tdc_l->push_back(fTDC_l[j]);
+        // T->Earm_BBHodo_Dig.tdc_t->push_back(835);// temp hack. fixme
+        // T->Earm_BBHodo_Dig.tdc_l->push_back(830);
       }
       // equalize the hits:
       int max_size = max(T->Earm_BBHodo_Dig.tdc_l->size(), T->Earm_BBHodo_Dig.tdc_t->size());

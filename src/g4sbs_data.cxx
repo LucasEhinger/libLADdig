@@ -179,6 +179,7 @@ namespace TSBSGeant4 {
     if(!tree)return(false);
     chan = new std::vector<int>;
     adc = new std::vector<double>;
+    adc_time = new std::vector<double>;
     tdc_l = new std::vector<double>;
     tdc_t = new std::vector<double>;
     amp = new std::vector<double>;
@@ -186,6 +187,7 @@ namespace TSBSGeant4 {
     b_nchan = tree->Branch(Form("%s.nchan", prefix), &nchan);
     b_chan = tree->Branch(Form("%s.chan", prefix), &chan);
     b_adc = tree->Branch(Form("%s.adc", prefix), &adc);
+    b_adc_time = tree->Branch(Form("%s.adc_time", prefix), &adc_time);
     b_tdc_l = tree->Branch(Form("%s.tdc_l", prefix), &tdc_l);
     b_tdc_t = tree->Branch(Form("%s.tdc_t", prefix), &tdc_t);
     b_amp = tree->Branch(Form("%s.amp", prefix), &amp);
@@ -198,6 +200,7 @@ namespace TSBSGeant4 {
       nchan = 0;
       chan->clear();
       adc->clear();
+      adc_time->clear();
       tdc_l->clear();
       tdc_t->clear();
       amp->clear();
@@ -210,6 +213,7 @@ namespace TSBSGeant4 {
       b_nchan->Fill();
       b_chan->Fill();
       b_adc->Fill();
+      b_adc_time->Fill();
       b_tdc_l->Fill();
       b_tdc_t->Fill();
       b_amp->Fill();

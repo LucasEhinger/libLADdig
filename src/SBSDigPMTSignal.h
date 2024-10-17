@@ -89,6 +89,8 @@ class PMTSignal {
   UInt_t fNpe;
   double fNpeChargeConv;
   double fADC;// One unique ADC value ?
+  std::vector<double> fADC_time;
+  double time_offset;
 
   double fEventTime;
   //TDCs: multiple values possible.

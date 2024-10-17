@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
   std::vector<TString> detectors_list;
 
   // const int nparam_pmtdet_adc  = 12;
-  const int nparam_pmtdet_fadc = 12;
+  const int nparam_pmtdet_fadc = 13;
   const int nparam_gemdet      = 12;
 
   int nparam_bbhodo_read    = 0;
