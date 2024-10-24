@@ -120,7 +120,7 @@ double SPEModel::GetHistoX(double y, double x1, double x2) {
 //
 PMTSignal::PMTSignal()
     : fSumEdep(0), fNpe(0), fNpeChargeConv(1.0), fADC(0), fEventTime(0), fNorm(0), ft0(0), ftau(0), fNADCSamps(0),
-      fNSamps(0), time_offset(1000) {
+      fNSamps(0), time_offset(100) {
   fLeadTimes.clear();
   fTrailTimes.clear();
   fTDC_l.clear();
@@ -133,7 +133,7 @@ PMTSignal::PMTSignal()
 
 PMTSignal::PMTSignal(double npechargeconv)
     : fSumEdep(0), fNpe(0), fNpeChargeConv(npechargeconv), fADC(0), fEventTime(0), fNorm(0), ft0(0), ftau(0),
-      fNADCSamps(0), fNSamps(0) {
+      fNADCSamps(0), fNSamps(0), time_offset(100) {
   fLeadTimes.clear();
   fTrailTimes.clear();
   fTDC_l.clear();
@@ -485,11 +485,11 @@ void PMTSignal::Digitize(int chan, int detid, g4sbs_tree *T, // gmn_tree* T,
       //  trim "all" bits that are above the number of TDC bits - a couple to speed it up
       //  (since TDC have a revolving clock, as far as I understand)
       //  let's use an arbitrary reference time offset of 1000 (?) TDC chans before the trigger
-      tdc_value = ((fLeadTimes.at(i)) / TDCconv) + time_offset; // No longer casting to Int
+      tdc_value = ((fLeadTimes.at(i)) / TDCconv) + time_offset/TDCconv; // No longer casting to Int
       fTDC_l.push_back(tdc_value);                              // they're already sorted in order, presumably
       // also mark the traling time with setting bin 31 to 1 // need to reconvert then
       if (fTrailTimes.size()) {
-        tdc_value = ((fTrailTimes.at(i)) / TDCconv) + time_offset; // No longer casting to Int
+        tdc_value = ((fTrailTimes.at(i)) / TDCconv) + time_offset/TDCconv; // No longer casting to Int
         fTDC_t.push_back(tdc_value);
       }
     }

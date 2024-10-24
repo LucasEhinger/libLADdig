@@ -53,7 +53,7 @@ bool UnfoldData(g4sbs_tree *T, double theta_sbs, double d_hcal, TRandom3 *R, std
           t   = tzero + T->Earm_BBHodoScint.tavg->at(i) +
               (0.4 + detector_z / 2 + pow(-1, j) * T->Earm_BBHodoScint.zhit->at(i)) / (0.3 / index_of_ref) -
               pmtdets[idet]->fTrigOffset; // Assume 0.4 is some sort of distance offset for the cables + pmt's.
-          // t=0; //LHE: This is a hack to view the time walk for now
+
           chan = 2 * (T->Earm_BBHodoScint.plane->at(i) * 11 + T->Earm_BBHodoScint.paddle->at(i)) + j;
           t += pmtdets[idet]->fTimeOffset[chan];
           // T->Earm_BBHodoScint_hit_sumedep->at(i);
