@@ -1,0 +1,49 @@
+#Random seed
+Rseed 0
+#global trigger jitter for all detectors in ns
+TriggerJitter 0.0 
+#list of detectors to digitize
+detectors_list LADhodo LADgem
+
+## parameters for LADhodo
+NChan_LADhodo 110
+gatewidth_LADhodo 100 
+gain_LADhodo 1.0e8
+#ped_LADhodo 500.0 
+#pedsigma_LADhodo 3.0
+ped_LADhodo 0.0 
+pedsigma_LADhodo 0.0
+trigoffset_LADhodo 18.6 
+#threshold_LADhodo 3.e-3 
+threshold_LADhodo 3.e
+ADCconv_LADhodo 100 
+ADCbits_LADhodo 19 
+TDCconv_LADhodo 0.1 
+TDCbits_LADhodo 19 
+sigmapulse_LADhodo 20 
+timeoffset_LADhodo 0.0
+
+## parameters for LADgem
+## parameters for GEMs
+# number of planes/modules/readout
+NPlanes_LADgem 4 
+# data acquisition window for LADgem in ns
+gatewidth_LADgem 400 
+nlayers_LADgem 2
+LADgem_layer_z 0.0 0.100
+#number of strips for each plane/module
+layer_LADgem 1 1 2 2
+nstrips_LADgem 3072 1536 3072 1536 
+#offset in transport coordinate for each plane/module in meters
+offset_LADgem 0. 0. 0. 0. 
+#strip angle for all BB GEM readouts in degrees
+RO_angle_LADgem 0.0 90.0 0.0 90.0 
+#triggeroffset_LADgem 120.8 121.28 121.28 121.28 121.74 122.2 122.2 122.2 126. 126. 126. 126.
+triggeroffset_LADgem 120.0 120.0 
+gain_LADgem 20.
+#zero suppression threshold for GEMs in ADC channels
+ZsupThr_LADgem 240.
+#common mode value/array for GEMs in ADC channels
+commonmode_array_LADgem 1500.
+
+endconfig
