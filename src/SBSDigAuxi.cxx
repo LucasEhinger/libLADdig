@@ -118,7 +118,8 @@ bool UnfoldData(g4sbs_tree *T, double theta_sbs, double d_hcal, TRandom3 *R, std
             }
           */
           // if(mod<2)cout << mod << " " << T->Earm_BBGEM.plane->at(k) << " " << T->Earm_BBGEM.xin->at(k) << endl;
-          hit.module = mod;
+
+          hit.module = T->LAD_GEM.plane->at(k);// Bad terminology, but module and plane are being used interchangably here.
           hit.edep   = T->LAD_GEM.edep->at(k) * 1.0e9; // eV! not MeV!!!!
           // hit.tmin = T->Earm_BBGEM_hit_tmin->at(k);
           // hit.tmax = T->Earm_BBGEM_hit_tmax->at(k);

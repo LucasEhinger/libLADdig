@@ -62,7 +62,7 @@ const double gem_width  = 0.4*3072/1000;
 const double gem_height = 0.4*1536/1000; // 0.4mm spacing * n strips in m
 
   int gem_minPlane   = 1;
-  int gem_maxPlane   = 2;//doesn't include 3
+  int gem_maxPlane   = 1;//includes 1
   int gem_minStrip   = 0;
   int gem_maxStrip   = 100;
   int gem_minNhits   = 1;
