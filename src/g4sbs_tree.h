@@ -108,15 +108,15 @@ public :
    // GEM variables
    // std::vector<gem_branch> GEMs;
 
-   //BB GEMs variables
-   TSBSGeant4::GEMData_t Earm_BBGEM;
-   TSBSGeant4::DigGEMData_t Earm_BBGEM_Dig;
+   //LAD GEMs variables
+   TSBSGeant4::GEMData_t LAD_GEM;
+   TSBSGeant4::DigGEMData_t LAD_GEM_Dig;
    TSBSGeant4::DigGEMData_t Earm_BBGEM_Dig_sig;
    //TSBSGeant4::TrackerData_t Earm_BBGEM_Track;
 
-   // BB timing hodoscope
-   TSBSGeant4::CalData_t Earm_BBHodoScint;
-   TSBSGeant4::DigTimingData_t Earm_BBHodo_Dig;
+   // LAD timing hodoscope
+   TSBSGeant4::CalData_t LAD_HodoScint;
+   TSBSGeant4::DigTimingData_t LAD_Hodo_Dig;
 
 
    //SBS GEMs variables

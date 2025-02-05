@@ -100,15 +100,17 @@ void g4sbs_tree::Init(TTree *tree, std::vector<TString> det_list, bool sig_br) {
   // fChain->SetBranchAddress("ev", &ev_count, &b_ev);
 
   for (int k = 0; k < det_list.size(); k++) {
-    if (det_list[k] == "bbhodo") {
-      printf(" bbhodo branches set up! \n");
-      SetupDetBranch(Earm_BBHodoScint, "LAD.Hodo.hit");
-      SetupDetBranch(Earm_BBHodo_Dig, "LAD.Hodo.dighit");
+    if (det_list[k] == "LADhodo") {
+      printf(" LADhodo branches set up! \n");
+      SetupDetBranch(LAD_HodoScint, "LAD.Hodo.hit");
+      SetupDetBranch(LAD_Hodo_Dig, "LAD.Hodo.dighit");
     }
-    if (det_list[k] == "bbgem") {
-      printf(" bbgem branches set up! \n");
-      SetupDetBranch(Earm_BBGEM, "Earm.BBGEM.hit");
-      SetupDetBranch(Earm_BBGEM_Dig, "Earm.BBGEM.dighit");
+    if (det_list[k] == "LADgem") {
+      printf(" LADgem branches set up! \n");
+      SetupDetBranch(LAD_GEM, "LAD.GEM.hit");
+      SetupDetBranch(LAD_GEM_Dig, "LAD.GEM.dighit");
+      // SetupDetBranch(LAD_GEM, "Earm.BBGEM.hit");
+      // SetupDetBranch(LAD_GEM_Dig, "Earm.BBGEM.dighit");
       // if(sig_br)SetupDetBranch(Earm_BBGEM_Dig_sig, "Earm.BBGEM.dighit_sig");
     }
     if (det_list[k] == "sbsgem") {
@@ -189,13 +191,13 @@ void g4sbs_tree::Loop() {
 void g4sbs_tree::SetupDetBranch(TSBSGeant4::VDetData_t &det, const char *prefix) { det.SetupBranches(fChain, prefix); }
 
 void g4sbs_tree::ClearDigBranches() {
-  Earm_BBGEM_Dig.ClearBranches();
-  Earm_BBHodo_Dig.ClearBranches();
+  LAD_GEM_Dig.ClearBranches();
+  LAD_Hodo_Dig.ClearBranches();
   Harm_SBSGEM_Dig.ClearBranches();
 }
 
 void g4sbs_tree::FillDigBranches() {
-  Earm_BBGEM_Dig.FillBranches();
-  Earm_BBHodo_Dig.FillBranches();
+  LAD_GEM_Dig.FillBranches();
+  LAD_Hodo_Dig.FillBranches();
   Harm_SBSGEM_Dig.FillBranches();
 }

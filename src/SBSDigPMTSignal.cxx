@@ -540,38 +540,38 @@ void PMTSignal::Digitize(int chan, int detid, g4sbs_tree *T, // gmn_tree* T,
     // T->Earm_BBHodo_dighit_nchan++;
     // T->Earm_BBHodo_dighit_chan->push_back(chan);
     // T->Earm_BBHodo_dighit_adc->push_back(fADC);
-    T->Earm_BBHodo_Dig.nchan++;
-    T->Earm_BBHodo_Dig.chan->push_back(chan);
-    T->Earm_BBHodo_Dig.adc->push_back(fADC);
-    T->Earm_BBHodo_Dig.amp->push_back(peak_amp);
+    T->LAD_Hodo_Dig.nchan++;
+    T->LAD_Hodo_Dig.chan->push_back(chan);
+    T->LAD_Hodo_Dig.adc->push_back(fADC);
+    T->LAD_Hodo_Dig.amp->push_back(peak_amp);
     // T->Earm_BBHodo_Dig.amp->push_back(850);
-    T->Earm_BBHodo_Dig.adc_time->push_back(fEventTime + time_offset);
+    T->LAD_Hodo_Dig.adc_time->push_back(fEventTime + time_offset);
     if (fTDC_l.size()) {
       for (int j = 0; j < fTDC_l.size(); j++) {
-        T->Earm_BBHodo_Dig.tdc_t->push_back(fTDC_t[j]);
-        T->Earm_BBHodo_Dig.tdc_l->push_back(fTDC_l[j]);
+        T->LAD_Hodo_Dig.tdc_t->push_back(fTDC_t[j]);
+        T->LAD_Hodo_Dig.tdc_l->push_back(fTDC_l[j]);
         // T->Earm_BBHodo_Dig.tdc_t->push_back(835);// temp hack. fixme
         // T->Earm_BBHodo_Dig.tdc_l->push_back(830);
       }
       // equalize the hits:
-      int max_size = max(T->Earm_BBHodo_Dig.tdc_l->size(), T->Earm_BBHodo_Dig.tdc_t->size());
-      max_size     = max(max_size, T->Earm_BBHodo_Dig.nchan);
-      while (T->Earm_BBHodo_Dig.nchan < max_size) {
-        T->Earm_BBHodo_Dig.nchan++;
-        T->Earm_BBHodo_Dig.chan->push_back(chan);
-        T->Earm_BBHodo_Dig.adc->push_back(-1000000);
-        T->Earm_BBHodo_Dig.amp->push_back(-1000000);
+      int max_size = max(T->LAD_Hodo_Dig.tdc_l->size(), T->LAD_Hodo_Dig.tdc_t->size());
+      max_size     = max(max_size, T->LAD_Hodo_Dig.nchan);
+      while (T->LAD_Hodo_Dig.nchan < max_size) {
+        T->LAD_Hodo_Dig.nchan++;
+        T->LAD_Hodo_Dig.chan->push_back(chan);
+        T->LAD_Hodo_Dig.adc->push_back(-1000000);
+        T->LAD_Hodo_Dig.amp->push_back(-1000000);
       }
-      while (T->Earm_BBHodo_Dig.tdc_l->size() < max_size) {
-        T->Earm_BBHodo_Dig.tdc_l->push_back(-1000000);
+      while (T->LAD_Hodo_Dig.tdc_l->size() < max_size) {
+        T->LAD_Hodo_Dig.tdc_l->push_back(-1000000);
       }
-      while (T->Earm_BBHodo_Dig.tdc_t->size() < max_size) {
-        T->Earm_BBHodo_Dig.tdc_t->push_back(-1000000);
+      while (T->LAD_Hodo_Dig.tdc_t->size() < max_size) {
+        T->LAD_Hodo_Dig.tdc_t->push_back(-1000000);
       }
 
     } else {
-      T->Earm_BBHodo_Dig.tdc_l->push_back(-1000000);
-      T->Earm_BBHodo_Dig.tdc_t->push_back(-1000000);
+      T->LAD_Hodo_Dig.tdc_l->push_back(-1000000);
+      T->LAD_Hodo_Dig.tdc_t->push_back(-1000000);
     }
   }
 } //

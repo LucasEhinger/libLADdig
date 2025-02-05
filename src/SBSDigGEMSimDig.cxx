@@ -1374,9 +1374,9 @@ void SBSDigGEMSimDig::CheckOut(SBSDigGEMDet *gemdet, const int uniqueid, TRandom
             }else{
               */
             for (int k = 0; k < fNSamples; k++) {
-              T->Earm_BBGEM_Dig.nstrips++;
-              T->Earm_BBGEM_Dig.module->push_back(i);
-              T->Earm_BBGEM_Dig.strip->push_back(j);
+              T->LAD_GEM_Dig.nstrips++;
+              T->LAD_GEM_Dig.module->push_back(i);
+              T->LAD_GEM_Dig.strip->push_back(j);
               /*
               T->Earm_BBGEM_Dig.adc_0->push_back(gemdet->GEMPlanes[i].GetADC(j, 0));
               T->Earm_BBGEM_Dig.adc_1->push_back(gemdet->GEMPlanes[i].GetADC(j, 1));
@@ -1385,8 +1385,8 @@ void SBSDigGEMSimDig::CheckOut(SBSDigGEMDet *gemdet, const int uniqueid, TRandom
               T->Earm_BBGEM_Dig.adc_4->push_back(gemdet->GEMPlanes[i].GetADC(j, 4));
               T->Earm_BBGEM_Dig.adc_5->push_back(gemdet->GEMPlanes[i].GetADC(j, 5));
               */
-              T->Earm_BBGEM_Dig.samp->push_back(k);
-              T->Earm_BBGEM_Dig.adc->push_back(gemdet->GEMPlanes[i].GetADC(j, k));
+              T->LAD_GEM_Dig.samp->push_back(k);
+              T->LAD_GEM_Dig.adc->push_back(gemdet->GEMPlanes[i].GetADC(j, k));
             }
             //}
           }

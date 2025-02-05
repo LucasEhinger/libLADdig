@@ -89,36 +89,37 @@ int main(int argc, char **argv) {
   const int nparam_pmtdet_fadc = 13;
   const int nparam_gemdet      = 12;
 
-  int nparam_bbhodo_read    = 0;
-  Int_t NChan_bbhodo        = 180;
-  Double_t gatewidth_bbhodo = 100.;
-  std::vector<Double_t> gain_bbhodo;
-  Double_t ped_bbhodo        = 0.;
-  Double_t pedsigma_bbhodo   = 0.;
-  Double_t trigoffset_bbhodo = 18.6;
-  Double_t threshold_bbhodo  = 3.e3;
-  Double_t ADCconv_bbhodo    = 100.;
-  Int_t ADCbits_bbhodo       = 12;
-  Double_t TDCconv_bbhodo    = 0.1;
-  Int_t TDCbits_bbhodo       = 19;
-  Double_t sigmapulse_bbhodo = 1.6;
-  std::vector<Double_t> timeoffset_bbhodo(110, 0);
+  int nparam_LADhodo_read    = 0;
+  Int_t NChan_LADhodo        = 180;
+  Double_t gatewidth_LADhodo = 100.;
+  std::vector<Double_t> gain_LADhodo;
+  Double_t ped_LADhodo        = 0.;
+  Double_t pedsigma_LADhodo   = 0.;
+  Double_t trigoffset_LADhodo = 18.6;
+  Double_t threshold_LADhodo  = 3.e3;
+  Double_t ADCconv_LADhodo    = 100.;
+  Int_t ADCbits_LADhodo       = 12;
+  Double_t TDCconv_LADhodo    = 0.1;
+  Int_t TDCbits_LADhodo       = 19;
+  Double_t sigmapulse_LADhodo = 1.6;
+  std::vector<Double_t> timeoffset_LADhodo(110, 0);
 
-  int nparam_bbgem_read    = 0;
-  Int_t NPlanes_bbgem      = 32; // number of planes/modules/readout
-  Double_t gatewidth_bbgem = 400.;
-  Double_t ZsupThr_bbgem   = 240.;
-  Int_t Nlayers_bbgem      = 5;
-  std::vector<Double_t> bbgem_layer_z;
-  Int_t *layer_bbgem;
-  Int_t *nstrips_bbgem;
-  Double_t *offset_bbgem;
-  Double_t *RO_angle_bbgem;
-  Double_t *triggeroffset_bbgem;
-  Double_t *gain_bbgem; // one gain per module
-  Double_t *commonmode_array_bbgem;
-  UShort_t nAPV_bbgem = 0;
+  int nparam_LADgem_read    = 0;
+  Int_t NPlanes_LADgem      = 32; // number of planes/modules/readout
+  Double_t gatewidth_LADgem = 400.;
+  Double_t ZsupThr_LADgem   = 240.;
+  Int_t Nlayers_LADgem      = 5;
+  std::vector<Double_t> LADgem_layer_z;
+  Int_t *layer_LADgem;
+  Int_t *nstrips_LADgem;
+  Double_t *offset_LADgem;
+  Double_t *RO_angle_LADgem;
+  Double_t *triggeroffset_LADgem;
+  Double_t *gain_LADgem; // one gain per module
+  Double_t *commonmode_array_LADgem;
+  UShort_t nAPV_LADgem = 0;
 
+  //Unused for LAD
   int nparam_sbsgem_read    = 0;
   Int_t NPlanes_sbsgem      = 32; // number of planes/modules/readout
   Double_t gatewidth_sbsgem = 400.;
@@ -176,275 +177,275 @@ int main(int argc, char **argv) {
         }
 
         // BBHODO
-        if (skey == "NChan_bbhodo") {
+        if (skey == "NChan_LADhodo") {
           TString stemp = ((TObjString *)(*tokens)[1])->GetString();
-          NChan_bbhodo  = stemp.Atoi();
-          nparam_bbhodo_read++;
+          NChan_LADhodo  = stemp.Atoi();
+          nparam_LADhodo_read++;
         }
 
-        if (skey == "gatewidth_bbhodo") {
+        if (skey == "gatewidth_LADhodo") {
           TString stemp    = ((TObjString *)(*tokens)[1])->GetString();
-          gatewidth_bbhodo = stemp.Atof();
-          nparam_bbhodo_read++;
+          gatewidth_LADhodo = stemp.Atof();
+          nparam_LADhodo_read++;
         }
 
-        if (skey == "gain_bbhodo") {
-          gain_bbhodo.resize(NChan_bbhodo);
-          if (ntokens == NChan_bbhodo + 1) {
-            for (int k = 0; k < NChan_bbhodo; k++) {
+        if (skey == "gain_LADhodo") {
+          gain_LADhodo.resize(NChan_LADhodo);
+          if (ntokens == NChan_LADhodo + 1) {
+            for (int k = 0; k < NChan_LADhodo; k++) {
               TString stemp  = ((TObjString *)(*tokens)[k + 1])->GetString();
-              gain_bbhodo[k] = stemp.Atof() * qe;
+              gain_LADhodo[k] = stemp.Atof() * qe;
             }
           } else {
-            cout << ntokens - 1 << " entries for " << skey << " dont match number of channels = " << NChan_bbhodo
+            cout << ntokens - 1 << " entries for " << skey << " dont match number of channels = " << NChan_LADhodo
                  << endl
                  << " applying first value on all planes " << endl;
             TString stemp = ((TObjString *)(*tokens)[1])->GetString();
-            for (int k = 0; k < NChan_bbhodo; k++) {
-              gain_bbhodo[k] = stemp.Atof() * qe;
+            for (int k = 0; k < NChan_LADhodo; k++) {
+              gain_LADhodo[k] = stemp.Atof() * qe;
             }
           }
-          nparam_bbhodo_read++;
+          nparam_LADhodo_read++;
         }
 
-        if (skey == "ped_bbhodo") {
+        if (skey == "ped_LADhodo") {
           TString stemp = ((TObjString *)(*tokens)[1])->GetString();
-          ped_bbhodo    = stemp.Atof();
-          nparam_bbhodo_read++;
+          ped_LADhodo    = stemp.Atof();
+          nparam_LADhodo_read++;
         }
 
-        if (skey == "pedsigma_bbhodo") {
+        if (skey == "pedsigma_LADhodo") {
           TString stemp   = ((TObjString *)(*tokens)[1])->GetString();
-          pedsigma_bbhodo = stemp.Atof();
-          nparam_bbhodo_read++;
+          pedsigma_LADhodo = stemp.Atof();
+          nparam_LADhodo_read++;
         }
 
-        if (skey == "trigoffset_bbhodo") {
+        if (skey == "trigoffset_LADhodo") {
           TString stemp     = ((TObjString *)(*tokens)[1])->GetString();
-          trigoffset_bbhodo = stemp.Atof();
-          nparam_bbhodo_read++;
+          trigoffset_LADhodo = stemp.Atof();
+          nparam_LADhodo_read++;
         }
 
-        if (skey == "threshold_bbhodo") {
+        if (skey == "threshold_LADhodo") {
           TString stemp    = ((TObjString *)(*tokens)[1])->GetString();
-          threshold_bbhodo = stemp.Atof();
-          nparam_bbhodo_read++;
+          threshold_LADhodo = stemp.Atof();
+          nparam_LADhodo_read++;
         }
 
-        if (skey == "ADCconv_bbhodo") {
+        if (skey == "ADCconv_LADhodo") {
           TString stemp  = ((TObjString *)(*tokens)[1])->GetString();
-          ADCconv_bbhodo = stemp.Atof();
-          nparam_bbhodo_read++;
+          ADCconv_LADhodo = stemp.Atof();
+          nparam_LADhodo_read++;
         }
 
-        if (skey == "ADCbits_bbhodo") {
+        if (skey == "ADCbits_LADhodo") {
           TString stemp  = ((TObjString *)(*tokens)[1])->GetString();
-          ADCbits_bbhodo = stemp.Atoi();
-          nparam_bbhodo_read++;
+          ADCbits_LADhodo = stemp.Atoi();
+          nparam_LADhodo_read++;
         }
 
-        if (skey == "TDCconv_bbhodo") {
+        if (skey == "TDCconv_LADhodo") {
           TString stemp  = ((TObjString *)(*tokens)[1])->GetString();
-          TDCconv_bbhodo = stemp.Atof();
-          nparam_bbhodo_read++;
+          TDCconv_LADhodo = stemp.Atof();
+          nparam_LADhodo_read++;
         }
 
-        if (skey == "TDCbits_bbhodo") {
+        if (skey == "TDCbits_LADhodo") {
           TString stemp  = ((TObjString *)(*tokens)[1])->GetString();
-          TDCbits_bbhodo = stemp.Atoi();
-          nparam_bbhodo_read++;
+          TDCbits_LADhodo = stemp.Atoi();
+          nparam_LADhodo_read++;
         }
 
-        if (skey == "sigmapulse_bbhodo") {
+        if (skey == "sigmapulse_LADhodo") {
           TString stemp     = ((TObjString *)(*tokens)[1])->GetString();
-          sigmapulse_bbhodo = stemp.Atof();
-          nparam_bbhodo_read++;
+          sigmapulse_LADhodo = stemp.Atof();
+          nparam_LADhodo_read++;
         }
 
-        if (skey == "timeoffset_bbhodo") {
-          timeoffset_bbhodo.resize(NChan_bbhodo);
-          if (ntokens == NChan_bbhodo + 1) {
-            for (int k = 0; k < NChan_bbhodo; k++) {
+        if (skey == "timeoffset_LADhodo") {
+          timeoffset_LADhodo.resize(NChan_LADhodo);
+          if (ntokens == NChan_LADhodo + 1) {
+            for (int k = 0; k < NChan_LADhodo; k++) {
               TString stemp        = ((TObjString *)(*tokens)[k + 1])->GetString();
-              timeoffset_bbhodo[k] = stemp.Atof();
+              timeoffset_LADhodo[k] = stemp.Atof();
             }
           } else {
-            cout << ntokens - 1 << " entries for " << skey << " dont match number of channels = " << NChan_bbhodo
+            cout << ntokens - 1 << " entries for " << skey << " dont match number of channels = " << NChan_LADhodo
                  << endl
                  << " applying first value on all planes " << endl;
             TString stemp = ((TObjString *)(*tokens)[1])->GetString();
-            for (int k = 0; k < NChan_bbhodo; k++) {
-              timeoffset_bbhodo[k] = stemp.Atof();
+            for (int k = 0; k < NChan_LADhodo; k++) {
+              timeoffset_LADhodo[k] = stemp.Atof();
             }
           }
-          nparam_bbhodo_read++;
+          nparam_LADhodo_read++;
         }
 
         // GEMs
-        if (skey == "NPlanes_bbgem") {
+        if (skey == "NPlanes_LADgem") {
           cout << "reading " << skey.Data() << endl;
           TString stemp = ((TObjString *)(*tokens)[1])->GetString();
-          NPlanes_bbgem = stemp.Atoi();
+          NPlanes_LADgem = stemp.Atoi();
 
-          layer_bbgem         = new Int_t[NPlanes_bbgem];
-          nstrips_bbgem       = new Int_t[NPlanes_bbgem];
-          offset_bbgem        = new Double_t[NPlanes_bbgem];
-          RO_angle_bbgem      = new Double_t[NPlanes_bbgem];
-          triggeroffset_bbgem = new Double_t[NPlanes_bbgem / 2];
-          gain_bbgem          = new Double_t[NPlanes_bbgem / 2];
-          nparam_bbgem_read++;
+          layer_LADgem         = new Int_t[NPlanes_LADgem];
+          nstrips_LADgem       = new Int_t[NPlanes_LADgem];
+          offset_LADgem        = new Double_t[NPlanes_LADgem];
+          RO_angle_LADgem      = new Double_t[NPlanes_LADgem];
+          triggeroffset_LADgem = new Double_t[NPlanes_LADgem / 2];
+          gain_LADgem          = new Double_t[NPlanes_LADgem / 2];
+          nparam_LADgem_read++;
         }
 
-        if (skey == "gatewidth_bbgem") {
+        if (skey == "gatewidth_LADgem") {
           cout << "reading " << skey.Data() << endl;
           TString stemp   = ((TObjString *)(*tokens)[1])->GetString();
-          gatewidth_bbgem = stemp.Atof();
-          nparam_bbgem_read++;
+          gatewidth_LADgem = stemp.Atof();
+          nparam_LADgem_read++;
         }
 
-        if (skey == "ZsupThr_bbgem") {
+        if (skey == "ZsupThr_LADgem") {
           cout << "reading " << skey.Data() << endl;
           TString stemp = ((TObjString *)(*tokens)[1])->GetString();
-          ZsupThr_bbgem = stemp.Atof();
-          nparam_bbgem_read++;
+          ZsupThr_LADgem = stemp.Atof();
+          nparam_LADgem_read++;
         }
 
-        if (skey == "nlayers_bbgem") {
+        if (skey == "nlayers_LADgem") {
           cout << "reading " << skey.Data() << endl;
           TString stemp = ((TObjString *)(*tokens)[1])->GetString();
-          Nlayers_bbgem = stemp.Atof();
-          nparam_bbgem_read++;
+          Nlayers_LADgem = stemp.Atof();
+          nparam_LADgem_read++;
         }
 
-        if (skey == "bbgem_layer_z") {
+        if (skey == "LADgem_layer_z") {
           cout << "reading " << skey.Data() << endl;
           TString stemp = ((TObjString *)(*tokens)[1])->GetString();
-          if (ntokens == Nlayers_bbgem + 1) {
+          if (ntokens == Nlayers_LADgem + 1) {
             for (int k = 1; k < ntokens; k++) {
               TString stemp = ((TObjString *)(*tokens)[k])->GetString();
-              bbgem_layer_z.push_back(stemp.Atof());
+              LADgem_layer_z.push_back(stemp.Atof());
             }
           } else {
-            cout << "number of entries for bbgem_layer_z = " << ntokens - 1
-                 << " don't match nlayers = " << Nlayers_bbgem << endl;
+            cout << "number of entries for LADgem_layer_z = " << ntokens - 1
+                 << " don't match nlayers = " << Nlayers_LADgem << endl;
             cout << "fix your db " << endl;
           }
-          nparam_bbgem_read++;
+          nparam_LADgem_read++;
         }
 
-        if (skey == "layer_bbgem") {
+        if (skey == "layer_LADgem") {
           cout << "reading " << skey.Data() << endl;
-          if (ntokens == NPlanes_bbgem + 1) {
+          if (ntokens == NPlanes_LADgem + 1) {
             for (int k = 1; k < ntokens; k++) {
               TString stemp      = ((TObjString *)(*tokens)[k])->GetString();
-              layer_bbgem[k - 1] = stemp.Atoi();
+              layer_LADgem[k - 1] = stemp.Atoi();
             }
           } else {
-            cout << "number of entries for layer_bbgem = " << ntokens - 1 << " don't match Nplanes = " << NPlanes_bbgem
+            cout << "number of entries for layer_LADgem = " << ntokens - 1 << " don't match Nplanes = " << NPlanes_LADgem
                  << endl;
             cout << "fix your db " << endl;
             exit(-1);
           }
-          nparam_bbgem_read++;
+          nparam_LADgem_read++;
         }
 
-        if (skey == "nstrips_bbgem") {
+        if (skey == "nstrips_LADgem") {
           cout << "reading " << skey.Data() << endl;
-          if (ntokens == NPlanes_bbgem + 1) {
+          if (ntokens == NPlanes_LADgem + 1) {
             for (int k = 1; k < ntokens; k++) {
               TString stemp        = ((TObjString *)(*tokens)[k])->GetString();
-              nstrips_bbgem[k - 1] = stemp.Atoi();
+              nstrips_LADgem[k - 1] = stemp.Atoi();
             }
           } else {
-            cout << "number of entries for nstrips_bbgem = " << ntokens - 1
-                 << " don't match Nplanes = " << NPlanes_bbgem << endl;
+            cout << "number of entries for nstrips_LADgem = " << ntokens - 1
+                 << " don't match Nplanes = " << NPlanes_LADgem << endl;
             cout << "fix your db " << endl;
             exit(-1);
           }
-          nparam_bbgem_read++;
+          nparam_LADgem_read++;
         }
 
-        if (skey == "offset_bbgem") {
+        if (skey == "offset_LADgem") {
           cout << "reading " << skey.Data() << endl;
-          if (ntokens == NPlanes_bbgem + 1) {
+          if (ntokens == NPlanes_LADgem + 1) {
             for (int k = 1; k < ntokens; k++) {
               TString stemp       = ((TObjString *)(*tokens)[k])->GetString();
-              offset_bbgem[k - 1] = stemp.Atof();
+              offset_LADgem[k - 1] = stemp.Atof();
             }
           } else {
-            cout << "number of entries for offset_bbgem = " << ntokens - 1 << " don't match Nplanes = " << NPlanes_bbgem
+            cout << "number of entries for offset_LADgem = " << ntokens - 1 << " don't match Nplanes = " << NPlanes_LADgem
                  << endl;
             cout << "fix your db " << endl;
             exit(-1);
           }
-          nparam_bbgem_read++;
+          nparam_LADgem_read++;
         }
 
-        if (skey == "RO_angle_bbgem") {
+        if (skey == "RO_angle_LADgem") {
           cout << "reading " << skey.Data() << endl;
-          if (ntokens == NPlanes_bbgem + 1) {
+          if (ntokens == NPlanes_LADgem + 1) {
             for (int k = 1; k < ntokens; k++) {
               TString stemp         = ((TObjString *)(*tokens)[k])->GetString();
-              RO_angle_bbgem[k - 1] = stemp.Atof() * TMath::DegToRad();
+              RO_angle_LADgem[k - 1] = stemp.Atof() * TMath::DegToRad();
             }
           } else {
-            cout << "number of entries for RO_angle_bbgem = " << ntokens - 1
-                 << " don't match Nplanes = " << NPlanes_bbgem << endl;
+            cout << "number of entries for RO_angle_LADgem = " << ntokens - 1
+                 << " don't match Nplanes = " << NPlanes_LADgem << endl;
             cout << "fix your db " << endl;
             exit(-1);
           }
-          nparam_bbgem_read++;
+          nparam_LADgem_read++;
         }
 
-        if (skey == "triggeroffset_bbgem") {
+        if (skey == "triggeroffset_LADgem") {
           cout << "reading " << skey.Data() << endl;
-          if (ntokens == NPlanes_bbgem / 2 + 1) {
+          if (ntokens == NPlanes_LADgem / 2 + 1) {
             for (int k = 1; k < ntokens; k++) {
               TString stemp              = ((TObjString *)(*tokens)[k])->GetString();
-              triggeroffset_bbgem[k - 1] = stemp.Atof();
+              triggeroffset_LADgem[k - 1] = stemp.Atof();
             }
           } else {
-            cout << "number of entries for triggeroffset_bbgem = " << ntokens - 1
-                 << " don't match Nplanes = " << NPlanes_bbgem << endl;
+            cout << "number of entries for triggeroffset_LADgem = " << ntokens - 1
+                 << " don't match Nplanes = " << NPlanes_LADgem << endl;
             cout << "fix your db " << endl;
             exit(-1);
           }
-          nparam_bbgem_read++;
+          nparam_LADgem_read++;
         }
 
-        if (skey == "gain_bbgem") {
+        if (skey == "gain_LADgem") {
           cout << "reading " << skey.Data() << endl;
-          if (ntokens == NPlanes_bbgem / 2 + 1) {
+          if (ntokens == NPlanes_LADgem / 2 + 1) {
             for (int k = 1; k < ntokens; k++) {
               TString stemp     = ((TObjString *)(*tokens)[k])->GetString();
-              gain_bbgem[k - 1] = stemp.Atof();
+              gain_LADgem[k - 1] = stemp.Atof();
             }
           } else {
-            cout << "number of entries for gain_bbgem = " << ntokens - 1
-                 << " don't match Nplanes/2 = " << NPlanes_bbgem / 2 << endl;
+            cout << "number of entries for gain_LADgem = " << ntokens - 1
+                 << " don't match Nplanes/2 = " << NPlanes_LADgem / 2 << endl;
             if (ntokens >= 2) {
               cout << "applying first value on all planes " << endl;
               TString stemp = ((TObjString *)(*tokens)[1])->GetString();
-              for (int k = 0; k < NPlanes_bbgem / 2; k++) {
-                gain_bbgem[k] = stemp.Atof();
+              for (int k = 0; k < NPlanes_LADgem / 2; k++) {
+                gain_LADgem[k] = stemp.Atof();
               }
             } else {
               cout << "fix your db " << endl;
               exit(-1);
             }
           }
-          nparam_bbgem_read++;
+          nparam_LADgem_read++;
         }
 
-        if (skey == "commonmode_array_bbgem") {
+        if (skey == "commonmode_array_LADgem") {
           cout << "reading " << skey.Data() << endl;
-          commonmode_array_bbgem = new Double_t[ntokens - 1];
+          commonmode_array_LADgem = new Double_t[ntokens - 1];
           for (int k = 1; k < ntokens; k++) {
-            nAPV_bbgem++;
+            nAPV_LADgem++;
             TString stemp                 = ((TObjString *)(*tokens)[k])->GetString();
-            commonmode_array_bbgem[k - 1] = stemp.Atof();
+            commonmode_array_LADgem[k - 1] = stemp.Atof();
           }
-          nparam_bbgem_read++;
+          nparam_LADgem_read++;
         }
 
         // SBSGEM
@@ -625,23 +626,23 @@ int main(int argc, char **argv) {
   cout << " declaring detectors " << endl;
   for (int k = 0; k < detectors_list.size(); k++) {
     cout << "detector: " << detectors_list[k].Data() << "... " << endl;
-    if (detectors_list[k] == "bbgem") {
-      if (nparam_bbgem_read != nparam_gemdet) {
+    if (detectors_list[k] == "LADgem") {
+      if (nparam_LADgem_read != nparam_gemdet) {
         cout << detectors_list[k] << " does not have the right number of parameters!!! " << endl
              << " fix database and retry! " << endl;
         exit(-1);
       }
 
-      SBSDigGEMDet *bbgem     = new SBSDigGEMDet(BBGEM_UNIQUE_DETID, NPlanes_bbgem, layer_bbgem, nstrips_bbgem,
-                                                 offset_bbgem, RO_angle_bbgem, 6, ZsupThr_bbgem);
-      SBSDigGEMSimDig *gemdig = new SBSDigGEMSimDig(NPlanes_bbgem / 2, triggeroffset_bbgem, ZsupThr_bbgem, nAPV_bbgem,
-                                                    commonmode_array_bbgem);
-      for (int m = 0; m < Nlayers_bbgem; m++) {
-        bbgem->fZLayer.push_back(bbgem_layer_z[m]);
+      SBSDigGEMDet *LADgem     = new SBSDigGEMDet(BBGEM_UNIQUE_DETID, NPlanes_LADgem, layer_LADgem, nstrips_LADgem,
+                                                 offset_LADgem, RO_angle_LADgem, 6, ZsupThr_LADgem);
+      SBSDigGEMSimDig *gemdig = new SBSDigGEMSimDig(NPlanes_LADgem / 2, triggeroffset_LADgem, ZsupThr_LADgem, nAPV_LADgem,
+                                                    commonmode_array_LADgem);
+      for (int m = 0; m < Nlayers_LADgem; m++) {
+        LADgem->fZLayer.push_back(LADgem_layer_z[m]);
       }
-      bbgem->fGateWidth = gatewidth_bbgem;
+      LADgem->fGateWidth = gatewidth_LADgem;
 
-      GEMdetectors.push_back(bbgem);
+      GEMdetectors.push_back(LADgem);
       gemdetmap.push_back(BBGEM_UNIQUE_DETID);
       GEMsimDig.push_back(gemdig);
       cout << " set up! " << endl;
@@ -667,28 +668,28 @@ int main(int argc, char **argv) {
       GEMsimDig.push_back(gemdig);
       cout << " set up! " << endl;
     }
-    if (detectors_list[k] == "bbhodo") {
-      if (nparam_bbhodo_read != nparam_pmtdet_fadc) {
+    if (detectors_list[k] == "LADhodo") {
+      if (nparam_LADhodo_read != nparam_pmtdet_fadc) {
         cout << detectors_list[k] << " does not have the right number of parameters!!! " << endl
              << " fix database and retry! " << endl;
         exit(-1);
       }
-      SBSDigPMTDet *bbhodo =
-          new SBSDigPMTDet(HODO_UNIQUE_DETID, NChan_bbhodo, gain_bbhodo, sigmapulse_bbhodo, gatewidth_bbhodo);
+      SBSDigPMTDet *LADhodo =
+          new SBSDigPMTDet(HODO_UNIQUE_DETID, NChan_LADhodo, gain_LADhodo, sigmapulse_LADhodo, gatewidth_LADhodo);
 
-      bbhodo->fGain       = gain_bbhodo;
-      bbhodo->fPedestal   = ped_bbhodo;
-      bbhodo->fPedSigma   = pedsigma_bbhodo;
-      bbhodo->fTrigOffset = trigoffset_bbhodo;
-      bbhodo->fThreshold  = threshold_bbhodo * spe_unit / ROimpedance;
-      bbhodo->fGateWidth  = gatewidth_bbhodo;
-      bbhodo->fADCconv    = ADCconv_bbhodo;
-      bbhodo->fADCbits    = ADCbits_bbhodo;
-      bbhodo->fTDCconv    = TDCconv_bbhodo;
-      bbhodo->fTDCbits    = TDCbits_bbhodo;
-      bbhodo->fTimeOffset = timeoffset_bbhodo;
+      LADhodo->fGain       = gain_LADhodo;
+      LADhodo->fPedestal   = ped_LADhodo;
+      LADhodo->fPedSigma   = pedsigma_LADhodo;
+      LADhodo->fTrigOffset = trigoffset_LADhodo;
+      LADhodo->fThreshold  = threshold_LADhodo * spe_unit / ROimpedance;
+      LADhodo->fGateWidth  = gatewidth_LADhodo;
+      LADhodo->fADCconv    = ADCconv_LADhodo;
+      LADhodo->fADCbits    = ADCbits_LADhodo;
+      LADhodo->fTDCconv    = TDCconv_LADhodo;
+      LADhodo->fTDCbits    = TDCbits_LADhodo;
+      LADhodo->fTimeOffset = timeoffset_LADhodo;
 
-      PMTdetectors.push_back(bbhodo);
+      PMTdetectors.push_back(LADhodo);
       detmap.push_back(HODO_UNIQUE_DETID);
       cout << " set up! " << endl;
     }

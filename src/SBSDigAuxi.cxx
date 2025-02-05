@@ -42,25 +42,25 @@ bool UnfoldData(g4sbs_tree *T, double theta_sbs, double d_hcal, TRandom3 *R, std
 
     double detector_z   = 2.0;
     double index_of_ref = 2.0;
-    if (idet >= 0) { // && T->Earm_BBHodoScint.nhits){
-      for (int i = 0; i < T->Earm_BBHodoScint.nhits; i++) {
+    if (idet >= 0) { // && T->LAD_HodoScint.nhits){
+      for (int i = 0; i < T->LAD_HodoScint.nhits; i++) {
         for (int j = 0; j < 2;
              j++) { // j = 0: close beam PMT, j = 1: far beam PMT //LHE: Probably the left & right (or t/b)??
           // Evaluation of number of photoelectrons and time from energy deposit documented at:
           // https://hallaweb.jlab.org/dvcslog/SBS/170711_172759/BB_hodoscope_restudy_update_20170711.pdf
-          Npe = R->Poisson(1.0e7 * T->Earm_BBHodoScint.sumedep->at(i) * 0.113187 *
-                           exp(-(detector_z / 2 + pow(-1, j) * T->Earm_BBHodoScint.zhit->at(i)) / 1.03533) * 0.24);
-          t   = tzero + T->Earm_BBHodoScint.tavg->at(i) +
-              (0.4 + detector_z / 2 + pow(-1, j) * T->Earm_BBHodoScint.zhit->at(i)) / (0.3 / index_of_ref) -
+          Npe = R->Poisson(1.0e7 * T->LAD_HodoScint.sumedep->at(i) * 0.113187 *
+                           exp(-(detector_z / 2 + pow(-1, j) * T->LAD_HodoScint.zhit->at(i)) / 1.03533) * 0.24);
+          t   = tzero + T->LAD_HodoScint.tavg->at(i) +
+              (0.4 + detector_z / 2 + pow(-1, j) * T->LAD_HodoScint.zhit->at(i)) / (0.3 / index_of_ref) -
               pmtdets[idet]->fTrigOffset; // Assume 0.4 is some sort of distance offset for the cables + pmt's.
 
-          chan = 2 * (T->Earm_BBHodoScint.plane->at(i) * 11 + T->Earm_BBHodoScint.paddle->at(i)) + j;
+          chan = 2 * (T->LAD_HodoScint.plane->at(i) * 11 + T->LAD_HodoScint.paddle->at(i)) + j;
           t += pmtdets[idet]->fTimeOffset[chan];
-          // T->Earm_BBHodoScint_hit_sumedep->at(i);
+          // T->LAD_HodoScint_hit_sumedep->at(i);
           // if(chan>pmtdets[idet]->fNChan)cout << chan << endl;
           pmtdets[idet]->PMTmap[chan].Fill(pmtdets[idet]->fRefPulse, Npe, pmtdets[idet]->fThreshold, t, signal);
           // cout << "BBhodo: chan "<< chan << " Npe " << Npe << " t " << t << ", t_zero = " << tzero << ", t_avg = " <<
-          // T->Earm_BBHodoScint.tavg->at(i) << ", -t_offset = " << -pmtdets[idet]->fTrigOffset << endl;
+          // T->LAD_HodoScint.tavg->at(i) << ", -t_offset = " << -pmtdets[idet]->fTrigOffset << endl;
         }
       }
       has_data = true;
@@ -83,13 +83,14 @@ bool UnfoldData(g4sbs_tree *T, double theta_sbs, double d_hcal, TRandom3 *R, std
       idet = -1;
     // Now process the GEM data
     if (idet >= 0) { // && T->Earm_BBGEM.nhits){
-      for (int k = 0; k < T->Earm_BBGEM.nhits; k++) {
-        if (T->Earm_BBGEM.edep->at(k) > 0) {
+      for (int k = 0; k < T->LAD_GEM.nhits; k++) {
+        if (T->LAD_GEM.edep->at(k) > 0) {
           SBSDigGEMDet::gemhit hit;
           hit.source = signal;
           // Here... that's one source of errors when we get out of the 4 INFN GEMs patter
           mod = 0;
           // cout << gemdets[idet]->fNPlanes/2 << endl;
+          /* start lhe comment
           while (mod < gemdets[idet]->fNPlanes / 2) {
             // cout << mod << " " << T->Earm_BBGEM.plane->at(k) << " == ? " << gemdets[idet]->GEMPlanes[mod*2].Layer()
             // << " ; " << (gemdets[idet]->GEMPlanes[mod*2].Xoffset()-gemdets[idet]->GEMPlanes[mod*2].dX()*0.5) << " <=
@@ -105,6 +106,8 @@ bool UnfoldData(g4sbs_tree *T, double theta_sbs, double d_hcal, TRandom3 *R, std
           } // that does the job, but maybe can be optimized???
           if (mod == gemdets[idet]->fNPlanes / 2)
             continue;
+          end lhe comment */
+          
           /*
             if(T->Earm_BBGEM.plane->at(k)==5){
               if(fabs(T->Earm_BBGEM.xin->at(k))>=1.024)continue;
@@ -116,17 +119,17 @@ bool UnfoldData(g4sbs_tree *T, double theta_sbs, double d_hcal, TRandom3 *R, std
           */
           // if(mod<2)cout << mod << " " << T->Earm_BBGEM.plane->at(k) << " " << T->Earm_BBGEM.xin->at(k) << endl;
           hit.module = mod;
-          hit.edep   = T->Earm_BBGEM.edep->at(k) * 1.0e9; // eV! not MeV!!!!
+          hit.edep   = T->LAD_GEM.edep->at(k) * 1.0e9; // eV! not MeV!!!!
           // hit.tmin = T->Earm_BBGEM_hit_tmin->at(k);
           // hit.tmax = T->Earm_BBGEM_hit_tmax->at(k);
-          hit.t = tzero + T->Earm_BBGEM.t->at(k);
+          hit.t = tzero + T->LAD_GEM.t->at(k);
           // cout << mod*2 << " " << gemdets[idet]->GEMPlanes[mod*2].Xoffset() << endl;
-          hit.xin  = T->Earm_BBGEM.xin->at(k) - gemdets[idet]->GEMPlanes[mod * 2].Xoffset();
-          hit.yin  = T->Earm_BBGEM.yin->at(k) - gemdets[idet]->GEMPlanes[mod * 2 + 1].Xoffset();
-          hit.zin  = T->Earm_BBGEM.zin->at(k) - gemdets[idet]->fZLayer[T->Earm_BBGEM.plane->at(k) - 1]; //+0.8031825;
-          hit.xout = T->Earm_BBGEM.xout->at(k) - gemdets[idet]->GEMPlanes[mod * 2].Xoffset();
-          hit.yout = T->Earm_BBGEM.yout->at(k) - gemdets[idet]->GEMPlanes[mod * 2 + 1].Xoffset();
-          hit.zout = T->Earm_BBGEM.zout->at(k) - gemdets[idet]->fZLayer[T->Earm_BBGEM.plane->at(k) - 1]; //+0.8031825;
+          hit.xin  = T->LAD_GEM.xin->at(k) - gemdets[idet]->GEMPlanes[mod * 2].Xoffset();
+          hit.yin  = T->LAD_GEM.yin->at(k) - gemdets[idet]->GEMPlanes[mod * 2 + 1].Xoffset();
+          hit.zin  = T->LAD_GEM.zin->at(k) - gemdets[idet]->fZLayer[T->LAD_GEM.plane->at(k) - 1]; //+0.8031825;
+          hit.xout = T->LAD_GEM.xout->at(k) - gemdets[idet]->GEMPlanes[mod * 2].Xoffset();
+          hit.yout = T->LAD_GEM.yout->at(k) - gemdets[idet]->GEMPlanes[mod * 2 + 1].Xoffset();
+          hit.zout = T->LAD_GEM.zout->at(k) - gemdets[idet]->fZLayer[T->LAD_GEM.plane->at(k) - 1]; //+0.8031825;
           // cout << mod << " " << hit.zin << " " << hit.zout << endl;
           gemdets[idet]->fGEMhits.push_back(hit);
         } // end if(sumedep>0)
