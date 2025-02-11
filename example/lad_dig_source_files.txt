@@ -1,0 +1,1 @@
+/volatile/hallc/c-lad/ehingerl/G4_LAD/carlos_proton/dig/ScanLAD_proton_400MeV_10k_20240205_dig.root

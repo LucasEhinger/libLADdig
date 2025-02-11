@@ -40,19 +40,22 @@ bool UnfoldData(g4sbs_tree *T, double theta_sbs, double d_hcal, TRandom3 *R, std
     if (idet >= detmap.size())
       idet = -1;
 
-    double detector_z   = 2.0;
-    double index_of_ref = 2.0;
+    // double detector_y   = 2.0;
+    double detector_y_all[11] = {4.5};
+    double index_of_ref       = 2.0;
     if (idet >= 0) { // && T->LAD_HodoScint.nhits){
       for (int i = 0; i < T->LAD_HodoScint.nhits; i++) {
         for (int j = 0; j < 2;
              j++) { // j = 0: close beam PMT, j = 1: far beam PMT //LHE: Probably the left & right (or t/b)??
-          // Evaluation of number of photoelectrons and time from energy deposit documented at:
-          // https://hallaweb.jlab.org/dvcslog/SBS/170711_172759/BB_hodoscope_restudy_update_20170711.pdf
-          Npe = R->Poisson(1.0e7 * T->LAD_HodoScint.sumedep->at(i) * 0.113187 *
-                           exp(-(detector_z / 2 + pow(-1, j) * T->LAD_HodoScint.zhit->at(i)) / 1.03533) * 0.24);
-          t   = tzero + T->LAD_HodoScint.tavg->at(i) +
-              (0.4 + detector_z / 2 + pow(-1, j) * T->LAD_HodoScint.zhit->at(i)) / (0.3 / index_of_ref) -
-              pmtdets[idet]->fTrigOffset; // Assume 0.4 is some sort of distance offset for the cables + pmt's.
+                    // Evaluation of number of photoelectrons and time from energy deposit documented at:
+                    // https://hallaweb.jlab.org/dvcslog/SBS/170711_172759/BB_hodoscope_restudy_update_20170711.pdf
+          double detector_y = detector_y_all[T->LAD_HodoScint.paddle->at(i)];
+
+          Npe               = R->Poisson(1.0e7 * T->LAD_HodoScint.sumedep->at(i) * 0.113187 *
+                                         exp(-(detector_y / 2 + pow(-1, j) * T->LAD_HodoScint.yhit->at(i)) / 1.03533) * 0.24);
+          t                 = tzero + T->LAD_HodoScint.tavg->at(i) +
+              (0.4 + detector_y / 2 + pow(-1, j) * T->LAD_HodoScint.yhit->at(i)) / (0.3 / index_of_ref) -
+              pmtdets[idet]->fTrigOffset; // LHE: I think 0.4 is some sort of distance offset for the cables + pmt's.
 
           chan = 2 * (T->LAD_HodoScint.plane->at(i) * 11 + T->LAD_HodoScint.paddle->at(i)) + j;
           t += pmtdets[idet]->fTimeOffset[chan];
@@ -107,7 +110,7 @@ bool UnfoldData(g4sbs_tree *T, double theta_sbs, double d_hcal, TRandom3 *R, std
           if (mod == gemdets[idet]->fNPlanes / 2)
             continue;
           end lhe comment */
-          
+
           /*
             if(T->Earm_BBGEM.plane->at(k)==5){
               if(fabs(T->Earm_BBGEM.xin->at(k))>=1.024)continue;
@@ -119,8 +122,9 @@ bool UnfoldData(g4sbs_tree *T, double theta_sbs, double d_hcal, TRandom3 *R, std
           */
           // if(mod<2)cout << mod << " " << T->Earm_BBGEM.plane->at(k) << " " << T->Earm_BBGEM.xin->at(k) << endl;
 
-          hit.module = T->LAD_GEM.plane->at(k);// Bad terminology, but module and plane are being used interchangably here.
-          hit.edep   = T->LAD_GEM.edep->at(k) * 1.0e9; // eV! not MeV!!!!
+          hit.module =
+              T->LAD_GEM.plane->at(k); // Bad terminology, but module and plane are being used interchangably here.
+          hit.edep = T->LAD_GEM.edep->at(k) * 1.0e9; // eV! not MeV!!!!
           // hit.tmin = T->Earm_BBGEM_hit_tmin->at(k);
           // hit.tmax = T->Earm_BBGEM_hit_tmax->at(k);
           hit.t = tzero + T->LAD_GEM.t->at(k);
