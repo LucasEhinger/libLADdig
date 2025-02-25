@@ -8,8 +8,8 @@ using namespace std;
 
 double hodo_minEdep = 1. / 1000;
 double hodo_maxEdep = 1. / 100;
-double gem_minEdep  = 1e-7;
-double gem_maxEdep  = 5e-7;
+double gem_minEdep  = 9e-6;
+double gem_maxEdep  = 9e-6;
 
 void g4_to_dig(string energy = "400") {
   // Open the ROOT file
@@ -75,8 +75,8 @@ void g4_to_dig(string energy = "400") {
   vector<int> *vgPDG        = nullptr;
   vector<int> *vgLevel      = nullptr;
 
-  gemana->SetBranchAddress("vXloc", &vXloc);
-  gemana->SetBranchAddress("vYloc", &vYloc);
+  gemana->SetBranchAddress("vXloc", &vXloc);//FIXME: temp hack swap x and y
+  gemana->SetBranchAddress("vYloc", &vYloc);//FIXME: temp hack swap x and y
   gemana->SetBranchAddress("vZloc", &vZloc);
   gemana->SetBranchAddress("vXglo", &vXglo);
   gemana->SetBranchAddress("vYglo", &vYglo);

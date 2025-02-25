@@ -58,30 +58,30 @@ void CreateTree(int nEvents = 20) {
   double hodo_maxEdep = 1. / 100;
 
   // GEM
-const double gem_width  = 0.4*3072/1000;
-const double gem_height = 0.4*1536/1000; // 0.4mm spacing * n strips in m
+  const double gem_width  = 0.4 * 3072 / 1000;
+  const double gem_height = 0.4 * 1536 / 1000; // 0.4mm spacing * n strips in m
 
-  int gem_minPlane   = 1;
-  int gem_maxPlane   = 1;//includes 1
+  int gem_minPlane   = 0; // Plane naming starts at 0
+  int gem_maxPlane   = 1; // includes 1
   int gem_minStrip   = 0;
   int gem_maxStrip   = 100;
-  int gem_minNhits   = 1;
-  int gem_maxNhits   = 1;
-  double gem_minXhit = 0.4;// -gem_width/2;
-  double gem_maxXhit = 0.4;// gem_width/2;
-  double gem_minYhit = 0.2;//-gem_height/2;
-  double gem_maxYhit = 0.2;//gem_height/2;
+  int gem_minNhits   = 2;
+  int gem_maxNhits   = 2;
+  double gem_minXhit = -gem_width/2; // -gem_width/2;
+  double gem_maxXhit = gem_width/2; // gem_width/2;
+  double gem_minYhit = -gem_height/2; //-gem_height/2;
+  double gem_maxYhit = gem_height/2; // gem_height/2;
   double gem_minZhit = 0.0;
   double gem_maxZhit = 0.0;
   double gem_minT    = 10.0;
   double gem_maxT    = 12.0;
-  double gem_minEdep = 1e-7;
-  double gem_maxEdep = 5e-7; //origeonally 1e-7 to 1e-6
+  double gem_minEdep = 9e-6;
+  double gem_maxEdep = 9e-6; // origeonally 1e-7 to 1e-6
 
   // Create branches for Hodo hits
   string hodo_prefix = "LAD.Hodo.hit.";
 
-  tree->Branch((hodo_prefix + "nhits").c_str(), &hodo_nHits);//, "nHits/I");
+  tree->Branch((hodo_prefix + "nhits").c_str(), &hodo_nHits); //, "nHits/I");
   tree->Branch((hodo_prefix + "plane").c_str(), &hodo_plane);
   tree->Branch((hodo_prefix + "paddle").c_str(), &hodo_paddle);
   tree->Branch((hodo_prefix + "xhit").c_str(), &hodo_xhit);
@@ -94,7 +94,7 @@ const double gem_height = 0.4*1536/1000; // 0.4mm spacing * n strips in m
   // Create branches for GEM hits
   // string gem_prefix = "LAD.GEM.hit.";
   string gem_prefix = "LAD.GEM.hit.";
-  tree->Branch((gem_prefix + "nhits").c_str(), &gem_nHits);//, "nHits/I");
+  tree->Branch((gem_prefix + "nhits").c_str(), &gem_nHits); //, "nHits/I");
   tree->Branch((gem_prefix + "plane").c_str(), &gem_plane);
   tree->Branch((gem_prefix + "strip").c_str(), &gem_strip);
   tree->Branch((gem_prefix + "xin").c_str(), &gem_xhit_in);
@@ -145,10 +145,11 @@ const double gem_height = 0.4*1536/1000; // 0.4mm spacing * n strips in m
     gem_edep.resize(gem_nHits);
     // Fill the vectors with random values within the specified range
     for (int j = 0; j < gem_nHits; j++) {
-      gem_plane[j]    = rand() % (gem_maxPlane - gem_minPlane + 1) + gem_minPlane;
-      gem_strip[j]    = rand() % (gem_maxStrip - gem_minStrip + 1) + gem_minStrip;
-      gem_xhit_in[j]  = (gem_maxXhit - gem_minXhit) * ((double)rand() / RAND_MAX) + gem_minXhit;
-      gem_yhit_in[j]  = (gem_maxYhit - gem_minYhit) * ((double)rand() / RAND_MAX) + gem_minYhit;
+      // gem_plane[j]    = rand() % (gem_maxPlane - gem_minPlane + 1) + gem_minPlane;
+      gem_plane[j]   = (j == 0) ? 0 : 1;
+      gem_strip[j]   = rand() % (gem_maxStrip - gem_minStrip + 1) + gem_minStrip;
+      gem_xhit_in[j] = (gem_maxXhit - gem_minXhit) * ((double)rand() / RAND_MAX) + gem_minXhit;
+      gem_yhit_in[j] = (gem_maxYhit - gem_minYhit) * ((double)rand() / RAND_MAX) + gem_minYhit;
       // cout << "gem_xhit_in[j] = " << gem_xhit_in[j] << endl;
       // cout << "gem_yhit_in[j] = " << gem_yhit_in[j] << endl;
       gem_zhit_in[j]  = (gem_maxZhit - gem_minZhit) * ((double)rand() / RAND_MAX) + gem_minZhit;
@@ -157,7 +158,7 @@ const double gem_height = 0.4*1536/1000; // 0.4mm spacing * n strips in m
       gem_yhit_out[j] = gem_yhit_in[j]; // (gem_maxYhit - gem_minYhit) * ((double)rand() / RAND_MAX) + gem_minYhit;
       gem_zhit_out[j] =
           gem_zhit_in[j] + 0.005; // (gem_maxZhit - gem_minZhit) * ((double)rand() / RAND_MAX) + gem_minZhit;
-      gem_t_out[j] = (gem_maxT - gem_minT) * ((double)rand() / RAND_MAX) + gem_minT;
+      gem_t_out[j] = gem_t_in[j];// (gem_maxT - gem_minT) * ((double)rand() / RAND_MAX) + gem_minT;
       gem_edep[j]  = (gem_maxEdep - gem_minEdep) * ((double)rand() / RAND_MAX) + gem_minEdep;
     }
 

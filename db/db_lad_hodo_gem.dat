@@ -42,7 +42,8 @@ RO_angle_LADgem 0.0 90.0 0.0 90.0
 triggeroffset_LADgem 120.0 120.0 
 gain_LADgem 20.
 #zero suppression threshold for GEMs in ADC channels
-ZsupThr_LADgem 240.
+#ZsupThr_LADgem 240.
+ZsupThr_LADgem  150.
 #common mode value/array for GEMs in ADC channels
 commonmode_array_LADgem 1500.
 
